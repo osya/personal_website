@@ -1,0 +1,7 @@
+{% extends 'personal/header.jinja' %}
+
+{% block content %}
+    {% for post in object_list %}
+        <h5>{{ post.date.strftime('%Y-%m-%d') }}<a href="/blog/{{ post.id }}"> {{ post.title }}</a></h5>
+    {% endfor %}
+{% endblock %}
