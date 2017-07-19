@@ -1,10 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render_to_response
 
 
 def index(request):
-    return render(request, 'personal/home.jinja')
+    return render_to_response('personal/home.jinja')
 
 
 def contact(request):
-    return render(request, 'personal/basic.jinja', {'content': ['If you would like to contact me, please email me',
-                                                               'info@vosipov.com']})
+    context = {'content': ['If you would like to contact me, please email me', 'info@vosipov.com']}
+    return render_to_response('personal/basic.jinja', context)
