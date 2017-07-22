@@ -31,17 +31,22 @@ ALLOWED_HOSTS = ['django-tutorials.herokuapp.com', '127.0.0.1']
 
 # Application definition
 
-INSTALLED_APPS = [
-    'blog.apps.BlogConfig',
-    'personal.apps.PersonalConfig',
+DJANGO_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+)
+THIRD_PARTY_APPS = (
     'django_jinja',
-]
+)
+LOCAL_APPS = (
+    'blog.apps.BlogConfig',
+    'personal.apps.PersonalConfig',
+)
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
