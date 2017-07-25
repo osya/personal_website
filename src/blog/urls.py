@@ -1,8 +1,7 @@
-from django.conf.urls import url, include
-from django.views.generic import ListView, DetailView
-from blog.models import Post
+from django.conf.urls import url
+from .views import BlogView, PostView
 
 urlpatterns = [
-    url(r'^(?P<pk>\d+)$', DetailView.as_view(model=Post, template_name='blog/post.jinja')),
-    url(r'^$', ListView.as_view(queryset=Post.objects.all().order_by('-date')[:25], template_name='blog/blog.jinja'))
+    url(r'^(?P<pk>\d+)$', PostView.as_view()),
+    url(r'^$', BlogView.as_view(), name='blog')
 ]

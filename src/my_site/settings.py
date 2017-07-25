@@ -43,8 +43,8 @@ THIRD_PARTY_APPS = (
     'django_jinja',
 )
 LOCAL_APPS = (
-    'blog.apps.BlogConfig',
-    'personal.apps.PersonalConfig',
+    'blog',
+    'personal',
 )
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
