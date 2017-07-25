@@ -1,10 +1,14 @@
-from django.shortcuts import render_to_response
+from django.views.generic import TemplateView
 
 
-def index(request):
-    return render_to_response('personal/home.html')
+class HomeView(TemplateView):
+    template_name = 'personal/home.html'
 
 
-def contact(request):
-    context = {'content': ['If you would like to contact me, please email me', 'info@vosipov.com']}
-    return render_to_response('personal/basic.html', context)
+class ContactView(TemplateView):
+    template_name = 'personal/contact.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ContactView, self).get_context_data(**kwargs)
+        context["content"] = ['If you would like to contact me, please email me', 'info@vosipov.com']
+        return context
