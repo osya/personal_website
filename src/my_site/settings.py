@@ -41,6 +41,7 @@ DJANGO_APPS = (
 )
 THIRD_PARTY_APPS = (
     'django_jinja',
+    'crispy_forms',
 )
 LOCAL_APPS = (
     'blog',
@@ -71,7 +72,7 @@ TEMPLATES = [
     },
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -143,3 +144,5 @@ STATIC_URL = '/static/'
 if DEBUG:
     STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static', 'static-only')
     STATICFILES_DIRS = (os.path.join(os.path.dirname(BASE_DIR), 'static', 'static'),)
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
