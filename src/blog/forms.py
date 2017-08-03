@@ -15,11 +15,10 @@ class CommonFormHelper(FormHelper):
 
 class PostForm(forms.ModelForm):
     class Meta:
-        fields = ('title', 'body', 'date')
+        fields = ('title', 'body',)
         labels = {
             'title': '',
             'body': '',
-            'date': 'on'
         }
         model = Post
 
