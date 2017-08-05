@@ -3,5 +3,5 @@ from .views import BlogView, PostView
 
 urlpatterns = [
     url(r'^(?P<pk>\d+)$', PostView.as_view()),
-    url(r'^$', BlogView.as_view(), name='blog')
+    url(r'^(?:page/(?P<page>\d+))?$', BlogView.as_view(), name='blog'),
 ]

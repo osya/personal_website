@@ -2,7 +2,11 @@
 
 {% block title %}Home{% endblock %}
 
-{% block headline %}<p>Hey, welcome to my website! I am a programmer!</p>{% endblock %}
+{% block headline %}
+    <div class="jumbotron">
+        <p>Hey, welcome to my website! I am a programmer!</p>
+    </div>
+{% endblock %}
 
 {% block content %}
     {% include "personal/includes/htmlsnippet.html"%}
