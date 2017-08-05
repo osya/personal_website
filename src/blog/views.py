@@ -18,7 +18,6 @@ class PostView(DetailView):
         return PostForm(instance=post)
 
     def get_context_data(self, **kwargs):
-        page = self.request.GET.get('page', 1)
         context = super(PostView, self).get_context_data(**kwargs)
-        context['page'] = page
+        context['page'] = self.request.GET.get('page', 1)
         return context
