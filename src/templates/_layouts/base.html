@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Valeriy Osipov</title>
+    <title>{% block title %}{% endblock %} :: Valeriy Osipov :: Programming, Freelancing</title>
 
     {% load static %}
     <!-- Bootstrap core CSS -->
@@ -23,7 +23,7 @@
             <div class="col-sm-10">
                 <br>
                 <div style="text-align: center;">
-                    <h3>Programming, Freelancing</h3>
+                    {% block headline %}{% endblock %}
                 </div>
             </div>
         </div><br>

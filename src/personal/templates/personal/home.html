@@ -1,7 +1,9 @@
 {% extends '_layouts/base.html' %}
 
-{% block content %}
-    <p>Hey, welcome to my website! I am a programmer!</p>
+{% block title %}Home{% endblock %}
 
+{% block headline %}<p>Hey, welcome to my website! I am a programmer!</p>{% endblock %}
+
+{% block content %}
     {% include "personal/includes/htmlsnippet.html"%}
 {% endblock %}
