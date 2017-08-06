@@ -4,7 +4,7 @@ from blog.models import Post
 
 
 class BlogView(ListView):
-    queryset = Post.objects.all().order_by('-date')
+    queryset = Post.objects.all().order_by('-pubdate')
     paginate_by = 10
 
 

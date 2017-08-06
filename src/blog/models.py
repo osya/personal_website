@@ -4,9 +4,9 @@ from precise_bbcode.fields import BBCodeTextField
 
 
 class Post(models.Model):
-    title = models.CharField(max_length=140)
+    title = models.CharField(max_length=140, unique_for_date='pubdate')
     body = BBCodeTextField()
-    date = models.DateTimeField(auto_now_add=True, blank=True)
+    pubdate = models.DateTimeField(auto_now_add=True, blank=True)
 
     def __str__(self):
         return self.title
