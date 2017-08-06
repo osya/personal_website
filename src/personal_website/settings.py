@@ -40,9 +40,9 @@ DJANGO_APPS = (
 )
 THIRD_PARTY_APPS = (
     'django_jinja',
-    'crispy_forms',
     'django_comments_xtd',
     'django_comments',
+    'precise_bbcode',
 )
 LOCAL_APPS = (
     'blog',
@@ -142,8 +142,6 @@ STATIC_URL = '/static/'
 if DEBUG:
     STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static', 'static-only')
     STATICFILES_DIRS = (os.path.join(os.path.dirname(BASE_DIR), 'static', 'static'),)
-
-CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 # for django-comments-xtd
 SITE_ID = 1

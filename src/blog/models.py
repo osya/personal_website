@@ -1,10 +1,11 @@
 from django.core.urlresolvers import reverse
 from django.db import models
+from precise_bbcode.fields import BBCodeTextField
 
 
 class Post(models.Model):
     title = models.CharField(max_length=140)
-    body = models.TextField()
+    body = BBCodeTextField()
     date = models.DateTimeField(auto_now_add=True, blank=True)
 
     def __str__(self):

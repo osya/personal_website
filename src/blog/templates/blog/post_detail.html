@@ -1,17 +1,16 @@
 {% extends '_layouts/base.html' %}
-{% load crispy_forms_tags %}
 {% load comments %}
 
-{% block title %}Post Detail{% endblock %}
+{% block title %}Post {{ object.title }}{% endblock %}
 
-{% block headline %}<h2>Post Detail</h2>{% endblock %}
+{% block headline %}<h2>Post {{ object.title }}</h2>{% endblock %}
 
 {% block content %}
     <div class="row">
         <div class="col-sm-6 col-sm-offset-3">
-            {% crispy object %}
+            {{ object.body.rendered }}
 
-            {% get_comment_count for object.instance as comment_count %}
+            {% get_comment_count for object as comment_count %}
             <div class="text-center" style="padding-top:20px">
               <a href="{% url 'blog:post-list' page %}"><< Back to the post list</a>
               &nbsp;&sdot;&nbsp;
@@ -21,14 +20,14 @@
             {% if comment_count %}
                 <hr/>
                 <div class="comments">
-                  {% render_comment_list for object.instance %}
+                  {% render_comment_list for object %}
                 </div>
             {% endif %}
 
             <div class="comment">
               <h4 class="text-center">Your comment</h4>
               <div class="well">
-                {% render_comment_form for object.instance %}
+                {% render_comment_form for object %}
               </div>
             </div>
         </div>
