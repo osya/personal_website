@@ -8,8 +8,8 @@
 {% block content %}
     <div class="row">
         <div class="col-sm-6 col-sm-offset-3">
-            {{ object.body.rendered }}
-
+            <p>{{ object.body.rendered }}</p>
+            <br>
             {% get_comment_count for object as comment_count %}
             <div class="text-center" style="padding-top:20px">
               <a href="{% url 'blog:post-list' page %}"><< Back to the post list</a>
