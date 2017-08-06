@@ -28,5 +28,4 @@ class PostForm(forms.ModelForm):
         self.helper.layout = Layout(
                 Field('title', readonly=True),
                 Field('body', readonly=True),
-                Field('date', readonly=True),
         )

@@ -6,21 +6,21 @@
 
 {% block content %}
     {% for post in post_list %}
-        <h5>{{ post.date|date:"Y-m-d" }}<a href="/blog/{{ post.id }}?page={{ page_obj.number }}"> {{ post.title }}</a></h5>
+        <h5>{{ post.date|date:"Y-m-d" }}<a href="{{ post.get_absolute_url }}?page={{ page_obj.number }}"> {{ post.title }}</a></h5>
     {% endfor %}
 
     {% if is_paginated %}
         <div class="pagination">
             <span class="page-links">
                 {% if page_obj.has_previous %}
-                    <a href="{% url 'blog' page_obj.previous_page_number %}">&lt;</a>
+                    <a href="{% url 'blog:post-list' page_obj.previous_page_number %}">&lt;</a>
                 {% endif %}
                 {% for pn in paginator.page_range %}
                     {% if not forloop.first %}
                         &nbsp;&nbsp;|&nbsp;&nbsp;
                     {% endif %}
                     {% if page_obj.number != pn %}
-                        <a href="{% url 'blog' pn %}">
+                        <a href="{% url 'blog:post-list' pn %}">
                     {% endif %}
                     {{ pn }}
                     {% if page_obj.number != pn %}
@@ -28,7 +28,7 @@
                     {% endif %}
                 {% endfor %}
                 {% if page_obj.has_next %}
-                    <a href="{% url 'blog' page_obj.next_page_number %}">&gt;</a>
+                    <a href="{% url 'blog:post-list' page_obj.next_page_number %}">&gt;</a>
                 {% endif %}
             </span>
         </div>

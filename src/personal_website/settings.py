@@ -36,10 +36,13 @@ DJANGO_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',  # required for django-comments-xtd
 )
 THIRD_PARTY_APPS = (
     'django_jinja',
     'crispy_forms',
+    'django_comments_xtd',
+    'django_comments',
 )
 LOCAL_APPS = (
     'blog',
@@ -141,3 +144,7 @@ if DEBUG:
     STATICFILES_DIRS = (os.path.join(os.path.dirname(BASE_DIR), 'static', 'static'),)
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+# for django-comments-xtd
+SITE_ID = 1
+COMMENTS_APP = 'django_comments_xtd'
