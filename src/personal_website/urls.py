@@ -22,3 +22,5 @@ urlpatterns = [
     url(r'^', include('personal.urls')),
     url(r'^comments/', include('django_comments_xtd.urls')),
 ]
+
+# TODO: Implement dependencies (Bootsrap) installation via Bower or Webpack
