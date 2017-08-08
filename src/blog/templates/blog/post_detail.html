@@ -12,7 +12,7 @@
             <br>
             {% get_comment_count for object as comment_count %}
             <div class="text-center" style="padding-top:20px">
-              <a href="{% url 'blog:post-list' page %}"><< Back to the post list</a>
+              <a href="{% url 'blog:post-list' %}?page={{ page }}"><< Back to the post list</a>
               &nbsp;&sdot;&nbsp;
               {{ comment_count }} comments have been posted.
             </div>
