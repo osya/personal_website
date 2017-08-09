@@ -16,11 +16,15 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
+from blog.views import BlogView
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^blog/', include('blog.urls', namespace='blog')),
     url(r'^', include('personal.urls')),
     url(r'^comments/', include('django_comments_xtd.urls')),
+    url(r'^$', BlogView.as_view(), name='home'),
+    url(r'^accounts/', include('allauth.urls')),
 ]
 
 # TODO: Implement dependencies (Bootsrap) installation via Bower or Webpack

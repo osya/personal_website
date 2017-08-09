@@ -8,11 +8,11 @@
 {% block content %}
     <div class="row">
         <div class="col-sm-6 col-sm-offset-3">
-            <p>{{ object.body.rendered }}</p>
+            <p>{{ object.content.rendered }}</p>
             <br>
             {% get_comment_count for object as comment_count %}
             <div class="text-center" style="padding-top:20px">
-              <a href="{% url 'blog:post-list' %}?page={{ page }}"><< Back to the post list</a>
+              <a href="{% url 'blog:list' %}{% if page > 1 %}?page={{ page }}{% endif %}"><< Back to the post list</a>
               &nbsp;&sdot;&nbsp;
               {{ comment_count }} comments have been posted.
             </div>
