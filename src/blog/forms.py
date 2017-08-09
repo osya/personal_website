@@ -8,9 +8,6 @@ from .models import Post
 
 
 class PostForm(forms.ModelForm):
-    """
-        This form currently not used. But probably will be used for creating new posts
-    """
     class Meta:
         fields = ('title', 'description', 'content', 'is_commentable', 'tags',)
         model = Post
