@@ -71,6 +71,12 @@ class PostCreate(
     form_valid_message = 'Post created'
     object = None
 
+    def get_initial(self):
+        initial = super(PostCreate, self).get_initial()
+        if self.request.GET.get('tags'):
+            initial['tags'] = self.request.GET.get('tags')
+        return initial
+
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.user = self.request.user
