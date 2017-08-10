@@ -2,7 +2,7 @@ from braces import views
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.views.generic import DetailView, CreateView, UpdateView, DeleteView, ArchiveIndexView
-from django.views.generic.base import ContextMixin, View
+from django.views.generic.base import View
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.list import MultipleObjectMixin
 
@@ -10,19 +10,12 @@ from .forms import PostForm
 from .models import Post
 
 
-class PageContextMixin(ContextMixin, View):
-    def get_context_data(self, **kwargs):
-        context = super(PageContextMixin, self).get_context_data(**kwargs)
-        context['page'] = int(self.request.GET.get('page', 1))
-        return context
-
-
 class SuccessUrlMixin(View):
     def get_success_url(self):
         url = reverse('blog:list')
-        page = self.request.GET.get('page')
-        if page and int(page) > 1:
-            url = f'{url}?page={page}'
+        query = self.request.GET.urlencode()
+        if query:
+            url = f'{url}?{query}'
         return url
 
 
@@ -53,8 +46,16 @@ class BlogView(RestrictToUserMixin, ArchiveIndexView):
     allow_empty = True
     allow_future = True
 
+    def get_queryset(self):
+        queryset = super(BlogView, self).get_queryset()
+        tags = self.request.GET.get('tags')
+        if tags:
+            tags = tags.split(',')
+            queryset = queryset.filter(tags__name__in=tags).distinct()
+        return queryset
 
-class PostView(PageContextMixin, RestrictToUserMixin, DetailView):
+
+class PostView(RestrictToUserMixin, DetailView):
     model = Post
 
 
@@ -62,7 +63,6 @@ class PostCreate(
         views.SetHeadlineMixin,
         views.LoginRequiredMixin,
         views.FormValidMessageMixin,
-        PageContextMixin,
         SuccessUrlMixin,
         CreateView):
     model = Post
@@ -82,7 +82,6 @@ class PostUpdate(
         views.SetHeadlineMixin,
         views.LoginRequiredMixin,
         views.FormValidMessageMixin,
-        PageContextMixin,
         SuccessUrlMixin,
         RestrictToUserMixin,
         UpdateView):
@@ -95,7 +94,6 @@ class PostUpdate(
 class PostDelete(
         views.LoginRequiredMixin,
         views.FormValidMessageMixin,
-        PageContextMixin,
         SuccessUrlMixin,
         RestrictToUserMixin,
         DeleteView):

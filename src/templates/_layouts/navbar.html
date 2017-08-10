@@ -23,7 +23,7 @@
         </form>
         <ul class="nav navbar-nav navbar-right">
             <li>
-                <a href="{% url 'blog:create' %}{% if page_obj.number > 1 %}?page={{ page_obj.number }}{% endif %}">
+                <a href="{% url 'blog:create' %}{% query_builder request %}">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Add Post
                 </a>
             </li>
