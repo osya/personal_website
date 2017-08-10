@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.views.generic import RedirectView
 
 from blog.views import BlogView
 
@@ -23,7 +24,7 @@ urlpatterns = [
     url(r'^blog/', include('blog.urls', namespace='blog')),
     url(r'^', include('personal.urls')),
     url(r'^comments/', include('django_comments_xtd.urls')),
-    url(r'^$', BlogView.as_view(), name='home'),
+    url(r'^$', RedirectView.as_view(pattern_name='blog:list'), name='home'),
     url(r'^accounts/', include('allauth.urls')),
 ]
 
