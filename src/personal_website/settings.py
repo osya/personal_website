@@ -44,6 +44,7 @@ THIRD_PARTY_APPS = (
     'django_comments',
     'precise_bbcode',
     'taggit',
+    'taggit_selectize',
     'crispy_forms',
     'allauth',
     'allauth.account',
@@ -193,3 +194,7 @@ SOCIALACCOUNT_PROVIDERS = {
         'VERIFIED_EMAIL': False
     }
 }
+
+# Taggit-Selectize settings
+TAGGIT_TAGS_FROM_STRING = 'taggit_selectize.utils.parse_tags'
+TAGGIT_STRING_FROM_TAGS = 'taggit_selectize.utils.join_tags'

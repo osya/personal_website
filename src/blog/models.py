@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
 from precise_bbcode.fields import BBCodeTextField
-from taggit.managers import TaggableManager
+from taggit_selectize.managers import TaggableManager
 
 
 class Post(models.Model):

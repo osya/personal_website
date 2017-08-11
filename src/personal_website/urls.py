@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^comments/', include('django_comments_xtd.urls')),
     url(r'^$', RedirectView.as_view(pattern_name='blog:list'), name='home'),
     url(r'^accounts/', include('allauth.urls')),
+    url(r'^taggit/', include('taggit_selectize.urls')),
 ]
 
 # TODO: Implement dependencies (Bootsrap) installation via Bower or Webpack
