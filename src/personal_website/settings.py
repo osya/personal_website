@@ -150,6 +150,8 @@ if DEBUG:
     STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static', 'static-only')
     STATICFILES_DIRS = (os.path.join(os.path.dirname(BASE_DIR), 'static', 'static'),)
 
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
 # for django-comments-xtd
 SITE_ID = 1
 COMMENTS_APP = 'django_comments_xtd'
@@ -198,3 +200,8 @@ SOCIALACCOUNT_PROVIDERS = {
 # Taggit-Selectize settings
 TAGGIT_TAGS_FROM_STRING = 'taggit_selectize.utils.parse_tags'
 TAGGIT_STRING_FROM_TAGS = 'taggit_selectize.utils.join_tags'
+
+# Disable it if you need to work with taggit-selectize in django-admin
+TAGGIT_SELECTIZE = {
+    'CSS_FILENAMES': ("taggit_selectize/css/selectize.bootstrap3.css",),
+}
