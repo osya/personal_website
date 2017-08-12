@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
 from precise_bbcode.fields import BBCodeTextField
@@ -16,7 +16,7 @@ class Post(models.Model):
     content = BBCodeTextField()
     is_commentable = models.BooleanField(default=True)
     tags = TaggableManager(blank=True)
-    user = models.ForeignKey(User, editable=False)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, editable=False)
     posted = models.DateTimeField(auto_now_add=True, db_index=True)
     updated = models.DateTimeField(auto_now=True)
 
