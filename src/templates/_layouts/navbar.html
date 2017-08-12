@@ -15,7 +15,7 @@
             {% url 'contact' as contact %}
             <li {% if request.path == contact %} class="active" {% endif %}><a href="{% url 'contact' %}">Contact</a></li>
         </ul>
-        <form class="navbar-form navbar-left" role="search" method="get" action="#">
+        <form class="navbar-form navbar-left" role="search" method="get" action="{% url 'blog:list' %}">
             <div class="form-group">
                 <input type="text" class="form-control" name="q" value="">
             </div>

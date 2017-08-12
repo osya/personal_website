@@ -8,7 +8,9 @@
 {% block content %}
     <div class="row">
         <div class="col-sm-6 col-sm-offset-3">
-            <p>{{ object.content.rendered }}</p>
+            <p>Description: {{ object.description }}</p>
+            <br>
+            <p>Content rendered: {{ object.content.rendered }}</p>
             <br>
             {% with names=object.tags.names %}
                 {% if names.count > 0 %}

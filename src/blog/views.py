@@ -1,4 +1,5 @@
 from braces import views
+from django.db.models import Q
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.views.generic import DetailView, CreateView, UpdateView, DeleteView, ArchiveIndexView
@@ -52,6 +53,12 @@ class BlogView(RestrictToUserMixin, ArchiveIndexView):
         if tags:
             tags = tags.split(',')
             queryset = queryset.filter(tags__name__in=tags).distinct()
+        q = self.request.GET.get('q')
+        if q:
+            queryset = queryset.filter(
+                    Q(title__icontains=q) |
+                    Q(description__icontains=q) |
+                    Q(content__icontains=q)).distinct()
         return queryset
 
 
