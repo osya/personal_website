@@ -83,7 +83,8 @@ class CreatePostIntegrationTest(LiveServerTestCase):
         self.selenium.add_cookie({
             'name': settings.SESSION_COOKIE_NAME,
             'value': cookie.value,
-            'secure': False, 'path': '/'})
+            'secure': False,
+            'path': '/'})
         self.selenium.refresh()  # need to update page for logged in user
         self.selenium.find_element_by_id('id_title').send_keys('MyTitle')
         self.selenium.find_element_by_id('id_description').send_keys('MyDescription')
