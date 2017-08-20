@@ -49,6 +49,7 @@ class BlogView(RestrictToUserMixin, ArchiveIndexView):
     allow_future = True
 
     def get_queryset(self):
+        # TODO: Move to Model Manager
         queryset = super(BlogView, self).get_queryset()
         tags = self.request.GET.get('tags')
         if tags:
