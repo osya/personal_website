@@ -79,12 +79,15 @@ class CreatePostIntegrationTest(LiveServerTestCase):
         self.assertTrue(self.client.login(username=self.user.username, password=self.password))
         cookie = self.client.cookies[settings.SESSION_COOKIE_NAME]
         # TODO: Use URL reverse
-        self.selenium.get(f'{self.live_server_url}/blog/create')
-        self.selenium.add_cookie({
-            'name': settings.SESSION_COOKIE_NAME,
-            'value': cookie.value,
-            'secure': False,
-            'path': '/'})
+        # Replace `localhost` to 127.0.0.1 due to the WinError 10054 according to the
+        # https://stackoverflow.com/a/14491845/1360307
+        self.selenium.get(f'{self.live_server_url}/blog/create'.replace('localhost', '127.0.0.1'))
+        if cookie:
+            self.selenium.add_cookie({
+                'name': settings.SESSION_COOKIE_NAME,
+                'value': cookie.value,
+                'secure': False,
+                'path': '/'})
         self.selenium.refresh()  # need to update page for logged in user
         self.selenium.find_element_by_id('id_title').send_keys('MyTitle')
         self.selenium.find_element_by_id('id_description').send_keys('MyDescription')
