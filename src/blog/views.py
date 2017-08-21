@@ -48,7 +48,7 @@ class BlogView(RestrictToUserMixin, ArchiveIndexView):
     allow_future = True
 
     def get_queryset(self):
-        return Post.objects.list(self.request.GET)
+        return self.model.objects.list(self.request.GET)
 
 
 class PostView(RestrictToUserMixin, DetailView):
