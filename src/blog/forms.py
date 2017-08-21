@@ -10,7 +10,7 @@ from .models import Post
 
 class PostForm(forms.ModelForm):
     class Meta:
-        fields = ('title', 'description', 'content', 'is_commentable', 'tags',)
+        fields = ('title', 'description', "body", 'is_commentable', 'tags',)
         widgets = {'tags': TagSelectize(), }
         model = Post
 
@@ -18,7 +18,7 @@ class PostForm(forms.ModelForm):
         super(PostForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
-                'title', 'description', 'content', 'is_commentable', 'tags',
+                'title', 'description', 'body', 'is_commentable', 'tags',
                 ButtonHolder(
                         Submit('submit', 'Submit', css_class='btn btn-default')
                 )

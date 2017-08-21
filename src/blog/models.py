@@ -13,7 +13,7 @@ class Post(models.Model):
 
     title = models.CharField(max_length=100, unique_for_date='posted')
     description = models.TextField(null=True, blank=True)
-    content = BBCodeTextField()
+    body = BBCodeTextField()
     is_commentable = models.BooleanField(default=True)
     tags = TaggableManager(blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, editable=False)

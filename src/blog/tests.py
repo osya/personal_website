@@ -32,7 +32,7 @@ class PostFactory(factory.DjangoModelFactory):
     user = factory.SubFactory(UserFactory, password=random_string_generator())
     title = 'MyTitle'
     description = 'MyDescription'
-    content = 'MyContent'
+    body = 'MyBody'
     is_commentable = False
 
 
@@ -91,6 +91,6 @@ class CreatePostIntegrationTest(LiveServerTestCase):
         self.selenium.refresh()  # need to update page for logged in user
         self.selenium.find_element_by_id('id_title').send_keys('MyTitle')
         self.selenium.find_element_by_id('id_description').send_keys('MyDescription')
-        self.selenium.find_element_by_id('id_content').send_keys('MyContent')
+        self.selenium.find_element_by_id('id_body').send_keys('MyContent')
         self.selenium.find_element_by_xpath('//input[@type="submit"]').click()
         self.assertEqual(Post.objects.first().title, 'MyTitle')

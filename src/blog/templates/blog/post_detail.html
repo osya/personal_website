@@ -10,7 +10,7 @@
         <div class="col-sm-6 col-sm-offset-3">
             <p>Description: {{ object.description }}</p>
             <br>
-            <p>Content rendered: {{ object.content.rendered }}</p>
+            <p>Body rendered: {{ object.body.rendered }}</p>
             <br>
             {% with names=object.tags.names %}
                 {% if names.count > 0 %}
