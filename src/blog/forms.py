@@ -14,7 +14,7 @@ class PostForm(forms.ModelForm):
         fields = ('title', 'description', "body", 'is_commentable', 'tags',)
         widgets = {
             'tags': TagSelectize(),
-            'body': MarkdownWidget
+            'body': MarkdownWidget,
         }
         model = Post
 
