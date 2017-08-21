@@ -41,14 +41,13 @@ class RestrictToUserMixin(View):
 
 
 class BlogView(RestrictToUserMixin, ArchiveIndexView):
-    model = Post
     date_field = 'created'
     paginate_by = 10
     allow_empty = True
     allow_future = True
 
     def get_queryset(self):
-        return self.model.objects.list(self.request.GET)
+        return Post.objects.list(self.request.GET)
 
 
 class PostView(RestrictToUserMixin, DetailView):
