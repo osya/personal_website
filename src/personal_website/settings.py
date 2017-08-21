@@ -42,7 +42,7 @@ THIRD_PARTY_APPS = (
     'django_jinja',
     'django_comments_xtd',
     'django_comments',
-    'precise_bbcode',
+    'django_markdown',
     'taggit',
     'taggit_selectize',
     'crispy_forms',

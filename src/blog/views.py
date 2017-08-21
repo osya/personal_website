@@ -1,5 +1,4 @@
 from braces import views
-from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
@@ -43,25 +42,13 @@ class RestrictToUserMixin(View):
 
 class BlogView(RestrictToUserMixin, ArchiveIndexView):
     model = Post
-    date_field = 'posted'
+    date_field = 'created'
     paginate_by = 10
     allow_empty = True
     allow_future = True
 
     def get_queryset(self):
-        # TODO: Move to Model Manager
-        queryset = super(BlogView, self).get_queryset()
-        tags = self.request.GET.get('tags')
-        if tags:
-            tags = tags.split(',')
-            queryset = queryset.filter(tags__name__in=tags).distinct()
-        q = self.request.GET.get('q')
-        if q:
-            queryset = queryset.filter(
-                    Q(title__icontains=q) |
-                    Q(description__icontains=q) |
-                    Q(content__icontains=q)).distinct()
-        return queryset
+        return Post.objects.list(self.request.GET)
 
 
 class PostView(RestrictToUserMixin, DetailView):

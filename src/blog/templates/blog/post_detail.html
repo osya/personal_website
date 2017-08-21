@@ -1,16 +1,17 @@
 {% extends '_layouts/base.html' %}
+{% load django_markdown %}
 {% load comments %}
 
 {% block title %}Post {{ object.title }}{% endblock %}
 
-{% block headline %}<h2>Post {{ object.title }}</h2>{% endblock %}
+{% block headline %}<h2>Post "{{ object.title }}"</h2>{% endblock %}
 
 {% block content %}
     <div class="row">
         <div class="col-sm-6 col-sm-offset-3">
+            <p>{{ object.created }}</p>
             <p>Description: {{ object.description }}</p>
-            <br>
-            <p>Body rendered: {{ object.body.rendered }}</p>
+            <p>{{ object.body | markdown }}</p>
             <br>
             {% with names=object.tags.names %}
                 {% if names.count > 0 %}

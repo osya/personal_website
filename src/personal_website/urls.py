@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^$', RedirectView.as_view(pattern_name='blog:list'), name='home'),
     url(r'^accounts/', include('allauth.urls')),
     url(r'^taggit/', include('taggit_selectize.urls')),
+    url('^markdown/', include( 'django_markdown.urls')),
 ]
 
 # TODO: Implement dependencies (Bootsrap) installation via Bower or Webpack
