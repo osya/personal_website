@@ -2,8 +2,8 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Q
+from django.utils.text import slugify
 from django_markdown.models import MarkdownField
-from django.template.defaultfilters import slugify
 
 from taggit_selectize.managers import TaggableManager
 
@@ -51,5 +51,5 @@ class Post(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.title)
+            self.slug = slugify(self.title, allow_unicode=True)
         super(Post, self).save(*args, **kwargs)
