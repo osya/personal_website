@@ -1,4 +1,4 @@
-from braces import views
+from braces.views import SetHeadlineMixin, FormValidMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
@@ -55,9 +55,9 @@ class PostView(RestrictToUserMixin, DetailView):
 
 
 class PostCreate(
-        views.SetHeadlineMixin,
+        SetHeadlineMixin,
         LoginRequiredMixin,
-        views.FormValidMessageMixin,
+        FormValidMessageMixin,
         SuccessUrlMixin,
         CreateView):
     model = Post
@@ -80,9 +80,9 @@ class PostCreate(
 
 
 class PostUpdate(
-        views.SetHeadlineMixin,
+        SetHeadlineMixin,
         LoginRequiredMixin,
-        views.FormValidMessageMixin,
+        FormValidMessageMixin,
         SuccessUrlMixin,
         RestrictToUserMixin,
         UpdateView):
@@ -94,7 +94,7 @@ class PostUpdate(
 
 class PostDelete(
         LoginRequiredMixin,
-        views.FormValidMessageMixin,
+        FormValidMessageMixin,
         SuccessUrlMixin,
         RestrictToUserMixin,
         DeleteView):
