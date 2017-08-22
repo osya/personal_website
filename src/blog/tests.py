@@ -50,14 +50,14 @@ class BlogViewTests(TestCase):
         request = self.factory.get('/')
         request.user = UserFactory(password=random_string_generator())
         response = BlogView.as_view()(request)
-        self.assertEquals(list(response.context_data['object_list']), [],)
+        self.assertEquals(list(response.context_data['latest']), [],)
 
     def test_posts_in_context(self):
         request = self.factory.get('/')
         post = PostFactory()
         request.user = post.user
         response = BlogView.as_view()(request)
-        self.assertEquals(list(response.context_data['object_list']), [post],)
+        self.assertEquals(list(response.context_data['latest']), [post],)
 
 
 class CreatePostIntegrationTest(LiveServerTestCase):
