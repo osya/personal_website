@@ -10,3 +10,4 @@ urlpatterns = [
 ]
 
 # TODO: Change pk to slug in URLS
+# TODO: Add RSS/Atom
