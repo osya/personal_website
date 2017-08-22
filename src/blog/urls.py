@@ -8,3 +8,5 @@ urlpatterns = [
     url(r'^(?P<pk>\d+)/update$', PostUpdate.as_view(), name='update'),
     url(r'^(?P<pk>\d+)/delete$', PostDelete.as_view(), name='delete'),
 ]
+
+# TODO: Change pk to slug in URLS
