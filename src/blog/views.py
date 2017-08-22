@@ -7,8 +7,8 @@ from django.views.generic.base import View
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.list import MultipleObjectMixin
 
-from .forms import PostForm
-from .models import Post
+from blog.forms import PostForm
+from blog.models import Post
 
 
 class SuccessUrlMixin(View):

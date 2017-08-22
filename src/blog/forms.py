@@ -6,7 +6,7 @@ from django import forms
 from django_markdown.widgets import MarkdownWidget
 from taggit_selectize.widgets import TagSelectize
 
-from .models import Post
+from blog.models import Post
 
 
 class PostForm(forms.ModelForm):
