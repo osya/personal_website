@@ -49,6 +49,7 @@ THIRD_PARTY_APPS = (
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'rest_framework',
 )
 LOCAL_APPS = (
     'blog',
@@ -204,4 +205,11 @@ TAGGIT_STRING_FROM_TAGS = 'taggit_selectize.utils.join_tags'
 # Disable it if you need to work with taggit-selectize in django-admin
 TAGGIT_SELECTIZE = {
     'CSS_FILENAMES': ("taggit_selectize/css/selectize.bootstrap3.css",),
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+    ],
+    'PAGE_SIZE': 10
 }

@@ -6,9 +6,11 @@ from django.views.generic import DetailView, CreateView, UpdateView, DeleteView,
 from django.views.generic.base import View
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.list import MultipleObjectMixin
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 
 from blog.forms import PostForm
 from blog.models import Post
+from blog.serializers import PostSerializer
 
 
 class SuccessUrlMixin(View):
@@ -40,7 +42,7 @@ class RestrictToUserMixin(View):
             else redirect(reverse('login'))
 
 
-class BlogView(RestrictToUserMixin, ArchiveIndexView):
+class PostList(RestrictToUserMixin, ArchiveIndexView):
     date_field = 'created'
     paginate_by = 10
     allow_empty = True
@@ -50,8 +52,24 @@ class BlogView(RestrictToUserMixin, ArchiveIndexView):
         return Post.objects.list(self.request.GET)
 
 
-class PostView(RestrictToUserMixin, DetailView):
+class PostListApi(ListCreateAPIView):
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        return Post.objects.list(self.request.GET)
+
+
+class PostDetail(RestrictToUserMixin, DetailView):
     model = Post
+
+
+class PostDetailApi(RetrieveUpdateDestroyAPIView):
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        return Post.objects.list(self.request.GET)
+
+# TODO: Write tests for the API calls
 
 
 class PostCreate(

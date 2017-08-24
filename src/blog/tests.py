@@ -9,7 +9,7 @@ from django.test import TestCase, Client, RequestFactory, LiveServerTestCase
 from selenium.webdriver.chrome.webdriver import WebDriver
 
 from blog.models import Post
-from blog.views import BlogView
+from blog.views import PostList
 
 
 def random_string_generator(size=10, chars=string.ascii_lowercase + string.digits):
@@ -49,14 +49,14 @@ class BlogViewTests(TestCase):
     def test_no_posts_in_context(self):
         request = self.factory.get('/')
         request.user = UserFactory(password=random_string_generator())
-        response = BlogView.as_view()(request)
+        response = PostList.as_view()(request)
         self.assertEquals(list(response.context_data['latest']), [],)
 
     def test_posts_in_context(self):
         request = self.factory.get('/')
         post = PostFactory()
         request.user = post.user
-        response = BlogView.as_view()(request)
+        response = PostList.as_view()(request)
         self.assertEquals(list(response.context_data['latest']), [post],)
 
 
