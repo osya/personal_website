@@ -9,4 +9,5 @@ class BlogModerator(XtdCommentModerator):
     email_notification = True
     enable_field = 'is_commentable'
 
+
 moderator.register(Post, BlogModerator)
