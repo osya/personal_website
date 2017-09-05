@@ -4,7 +4,6 @@ from django.db import models
 from django.db.models import Q
 from django.utils.text import slugify
 from django_markdown.models import MarkdownField
-
 from taggit_selectize.managers import TaggableManager
 
 
@@ -18,9 +17,9 @@ class PostQuerySet(models.QuerySet):
         q = query_dict.get('q')
         if q:
             queryset = queryset.filter(
-                    Q(title__icontains=q) |
-                    Q(description__icontains=q) |
-                    Q(content__icontains=q)).distinct()
+                Q(title__icontains=q) |
+                Q(description__icontains=q) |
+                Q(content__icontains=q)).distinct()
         return queryset
 
 

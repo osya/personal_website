@@ -1,8 +1,8 @@
-from braces.views import SetHeadlineMixin, FormValidMessageMixin
+from braces.views import FormValidMessageMixin, SetHeadlineMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
-from django.views.generic import DetailView, CreateView, UpdateView, DeleteView, ArchiveIndexView
+from django.views.generic import ArchiveIndexView, CreateView, DeleteView, DetailView, UpdateView
 from django.views.generic.base import View
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.list import MultipleObjectMixin
