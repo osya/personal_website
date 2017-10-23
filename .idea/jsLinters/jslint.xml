@@ -2,7 +2,9 @@
 <project version="4">
   <component name="JSLintConfiguration">
     <option devel="true" />
+    <option es6="true" />
     <option maxerr="50" />
+    <option node="true" />
     <option globals="window" />
   </component>
 </project>

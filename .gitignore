@@ -46,7 +46,6 @@ fabric.properties
 ### Python template
 # Byte-compiled / optimized / DLL files
 __pycache__/
-*.py[cod]
 *$py.class
 
 # C extensions
@@ -140,3 +139,6 @@ ENV/
 .ropeproject
 
 src/db.sqlite3
+/static/dist/
+/static/static-only/
+/node_modules/

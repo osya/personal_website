@@ -13,8 +13,8 @@ urlpatterns = [
     url(r'^api/', include(api_patterns, namespace='api')),
     url(r'^create/$', PostCreate.as_view(), name='create'),
     url(r'^(?P<slug>[-\w]+)/$', PostDetail.as_view(), name='detail'),
-    url(r'^(?P<slug>[-\w]+)/update/$', PostUpdate.as_view(), name='update'),
-    url(r'^(?P<slug>[-\w]+)/delete/$', PostDelete.as_view(), name='delete'),
+    url(r'^(?P<pk>\d+)/update/$', PostUpdate.as_view(), name='update'),
+    url(r'^(?P<pk>\d+)/delete/$', PostDelete.as_view(), name='delete'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

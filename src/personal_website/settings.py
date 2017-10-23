@@ -40,7 +40,6 @@ DJANGO_APPS = (
     'django.contrib.sites',  # required for django-comments-xtd, django-allauth
 )
 THIRD_PARTY_APPS = (
-    'django_jinja',
     'django_comments_xtd',
     'django_comments',
     'django_markdown',
@@ -51,6 +50,7 @@ THIRD_PARTY_APPS = (
     'allauth.account',
     'allauth.socialaccount',
     'rest_framework',
+    'webpack_loader'
 )
 LOCAL_APPS = (
     'blog',
@@ -72,14 +72,6 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'personal_website.urls'
 
 TEMPLATES = [
-    {
-        'BACKEND': 'django_jinja.backend.Jinja2',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'match_extension': '.jinja',
-        }
-    },
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'templates')],
@@ -150,7 +142,19 @@ STATIC_URL = '/static/'
 
 if DEBUG:
     STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static', 'static-only')
-    STATICFILES_DIRS = (os.path.join(os.path.dirname(BASE_DIR), 'static', 'static'),)
+    STATICFILES_DIRS = (os.path.join(os.path.dirname(BASE_DIR), 'static', 'dist'),)
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'CACHE': not DEBUG,
+        'BUNDLE_DIR_NAME': 'dist/',  # must end with slash
+        'STATS_FILE': os.path.join(os.path.dirname(BASE_DIR), 'static', 'dist', 'manifest.json'),
+        'POLL_INTERVAL': 0.1,
+        'TIMEOUT': None
+    }
+}
+# noinspection PyPep8
+from webpack_loader.utils import get_files  # noqa isort:skip
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
@@ -205,7 +209,7 @@ TAGGIT_STRING_FROM_TAGS = 'taggit_selectize.utils.join_tags'
 
 # Disable it if you need to work with taggit-selectize in django-admin
 TAGGIT_SELECTIZE = {
-    'CSS_FILENAMES': ('taggit_selectize/css/selectize.bootstrap3.css',),
+    'CSS_FILENAMES': (os.path.basename(get_files('selectize', extension='css')[0]['path']),),
 }
 
 REST_FRAMEWORK = {

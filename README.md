@@ -4,4 +4,12 @@ Django-based personal website & blog created during the video series [Django Web
 
 # Installation
 
-- Make `python manage.py collectstatic` 
+```
+    git clone https://github.com/osya/personal_website
+    cd personal_website
+    pip install -r requirements.txt
+    npm install
+    node node_modules/webpack/bin/webpack.js
+    python manage.py collectstatic
+    python manage.py runserver
+``` 

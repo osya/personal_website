@@ -8,7 +8,9 @@ from taggit_selectize.managers import TaggableManager
 
 
 class PostQuerySet(models.QuerySet):
-    def list(self, query_dict={}):
+    def list(self, query_dict=None):
+        if query_dict is None:
+            query_dict = {}
         queryset = self.filter(publish=True)
         tags = query_dict.get('tags')
         if tags:
