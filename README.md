@@ -2,6 +2,8 @@
 
 Django-based personal website & blog created during the video series [Django Web Development with Python](https://www.youtube.com/playlist?list=PLQVvvaa0QuDeA05ZouE4OzDYLHY-XH-Nd)
 
+The project has text editing feature in Markdown. Authentication implemented based on `django-allauth`. It has Django Admin for user management. There is a CRUD management for blog posts.
+
 Used technologies:
 - Testing: Selenium & PhantomJS & Factory Boy
 - Assets management: NPM & Webpack
