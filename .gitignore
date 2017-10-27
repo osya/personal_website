@@ -139,6 +139,6 @@ ENV/
 .ropeproject
 
 src/db.sqlite3
-/static/dist/
-/static/static-only/
 /node_modules/
+/static/static-only/
+/static/manifest.json

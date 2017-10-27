@@ -142,13 +142,13 @@ STATIC_URL = '/static/'
 
 if DEBUG:
     STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static', 'static-only')
-    STATICFILES_DIRS = (os.path.join(os.path.dirname(BASE_DIR), 'static', 'dist'),)
+    STATICFILES_DIRS = (os.path.join(os.path.dirname(BASE_DIR), 'static', 'static'),)
 
 WEBPACK_LOADER = {
     'DEFAULT': {
         'CACHE': not DEBUG,
         'BUNDLE_DIR_NAME': 'dist/',  # must end with slash
-        'STATS_FILE': os.path.join(os.path.dirname(BASE_DIR), 'static', 'dist', 'manifest.json'),
+        'STATS_FILE': os.path.join(os.path.dirname(BASE_DIR), 'static', 'manifest.json'),
         'POLL_INTERVAL': 0.1,
         'TIMEOUT': None
     }
