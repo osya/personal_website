@@ -142,3 +142,4 @@ src/db.sqlite3
 /node_modules/
 /static/static-only/
 /static/manifest.json
+/static/static/
