@@ -29,6 +29,5 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
 
-# TODO: Implement dependencies (Bootsrap) installation via Bower or Webpack
 # TODO: Implement Profile and uploading photo in profile according to the https://github.com/osya/music_website, update
 # ImageField & File Uploading Cover letter; add "ImageField" tag to the GitHub

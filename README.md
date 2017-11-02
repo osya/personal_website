@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/osya/personal_website.svg)](https://travis-ci.org/osya/personal_website)
+[![Build Status](https://travis-ci.org/osya/personal_website.svg)](https://travis-ci.org/osya/personal_website) [![Coverage Status](https://coveralls.io/repos/github/osya/personal_website/badge.svg?branch=master)](https://coveralls.io/github/osya/personal_website?branch=master)
 
 Django-based personal website & blog created during the video series [Django Web Development with Python](https://www.youtube.com/playlist?list=PLQVvvaa0QuDeA05ZouE4OzDYLHY-XH-Nd)
 
