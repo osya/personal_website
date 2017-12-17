@@ -13,15 +13,6 @@ from blog.models import Post
 from blog.serializers import PostSerializer
 
 
-class SuccessUrlMixin(View):
-    def get_success_url(self):
-        url = reverse('blog:list')
-        query = self.request.GET.urlencode()
-        if query:
-            url = f'{url}?{query}'
-        return url
-
-
 class RestrictToUserMixin(View):
     object = None
 
@@ -47,9 +38,11 @@ class PostList(RestrictToUserMixin, ArchiveIndexView):
     paginate_by = 10
     allow_empty = True
     allow_future = True
+    model = Post
 
     def get_queryset(self):
-        return Post.objects.list(self.request.GET)
+        queryset = super(PostList, self).get_queryset()
+        return queryset.list(self.request.GET)
 
 
 class PostListApi(ListCreateAPIView):
@@ -76,7 +69,6 @@ class PostCreate(
         SetHeadlineMixin,
         LoginRequiredMixin,
         FormValidMessageMixin,
-        SuccessUrlMixin,
         CreateView):
     model = Post
     form_class = PostForm
@@ -101,7 +93,6 @@ class PostUpdate(
         SetHeadlineMixin,
         LoginRequiredMixin,
         FormValidMessageMixin,
-        SuccessUrlMixin,
         RestrictToUserMixin,
         UpdateView):
     model = Post
@@ -109,13 +100,26 @@ class PostUpdate(
     headline = 'Update Post'
     form_valid_message = 'Post updated'
 
+    def get_initial(self):
+        initial = super(PostUpdate, self).get_initial()
+        initial['publish'] = self.object.published is not None
+        return initial
+
 
 class PostDelete(
         LoginRequiredMixin,
         FormValidMessageMixin,
-        SuccessUrlMixin,
         RestrictToUserMixin,
         DeleteView):
     model = Post
     form_class = PostForm
-    form_valid_message = 'Post deleted'
+
+    def get_success_url(self):
+        url = reverse('blog:list')
+        query = self.request.GET.urlencode()
+        if query:
+            url = f'{url}?{query}'
+        return url
+
+    def get_form_valid_message(self):
+        return f'{"Post" if self.object.published is not None else "Draft"} deleted'

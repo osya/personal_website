@@ -11,7 +11,7 @@ class PostQuerySet(models.QuerySet):
     def list(self, query_dict=None):
         if query_dict is None:
             query_dict = {}
-        queryset = self.filter(publish=True)
+        queryset = self.filter(published__isnull='draft' in query_dict)
         tags = query_dict.get('tags')
         if tags:
             tags = tags.split(',')
@@ -21,7 +21,7 @@ class PostQuerySet(models.QuerySet):
             queryset = queryset.filter(
                 Q(title__icontains=q) |
                 Q(description__icontains=q) |
-                Q(content__icontains=q)).distinct()
+                Q(body__icontains=q)).distinct()
         return queryset
 
 
@@ -32,14 +32,13 @@ class Post(models.Model):
         verbose_name_plural = 'Blog Posts'
 
     title = models.CharField(max_length=100, unique_for_date='created')
-    description = models.TextField(null=True, blank=True)
     body = MarkdownField()
     slug = models.SlugField(max_length=200, unique=True)
     is_commentable = models.BooleanField(default=True)
     tags = TaggableManager(blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
-    publish = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True, db_index=True)
+    published = models.DateTimeField(null=True, blank=True)
     updated = models.DateTimeField(auto_now=True)
 
     objects = PostQuerySet.as_manager()

@@ -7,6 +7,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from django.test import Client, LiveServerTestCase, RequestFactory, TestCase
+from django.utils import timezone
 from selenium.webdriver.phantomjs.webdriver import WebDriver
 
 from blog.models import Post
@@ -32,9 +33,9 @@ class PostFactory(factory.DjangoModelFactory):
 
     user = factory.SubFactory(UserFactory, password=random_string_generator())
     title = 'MyTitle'
-    description = 'MyDescription'
     body = 'MyBody'
     is_commentable = False
+    published = timezone.now()
 
 
 class PostTests(TestCase):
@@ -97,7 +98,6 @@ class CreatePostIntegrationTest(LiveServerTestCase):
             })
         self.selenium.refresh()  # need to update page for logged in user
         self.selenium.find_element_by_id('id_title').send_keys('MyTitle')
-        self.selenium.find_element_by_id('id_description').send_keys('MyDescription')
         self.selenium.find_element_by_id('id_body').send_keys('MyContent')
         self.selenium.find_element_by_xpath('//input[@type="submit"]').click()
         self.assertEqual(Post.objects.first().title, 'MyTitle')
