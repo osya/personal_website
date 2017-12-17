@@ -66,8 +66,8 @@ class PostDetailApi(RetrieveUpdateDestroyAPIView):
 
 
 class PostCreate(
-        SetHeadlineMixin,
         LoginRequiredMixin,
+        SetHeadlineMixin,
         FormValidMessageMixin,
         CreateView):
     model = Post
@@ -90,8 +90,8 @@ class PostCreate(
 
 
 class PostUpdate(
-        SetHeadlineMixin,
         LoginRequiredMixin,
+        SetHeadlineMixin,
         FormValidMessageMixin,
         RestrictToUserMixin,
         UpdateView):
