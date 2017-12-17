@@ -52,14 +52,14 @@ class BlogViewTests(TestCase):
         request = self.factory.get('/')
         request.user = UserFactory(password=random_string_generator())
         response = PostList.as_view()(request)
-        self.assertEquals(list(response.context_data['latest']), [],)
+        self.assertEquals(list(response.context_data['latest']), [], )
 
     def test_posts_in_context(self):
         request = self.factory.get('/')
         post = PostFactory()
         request.user = post.user
         response = PostList.as_view()(request)
-        self.assertEquals(list(response.context_data['latest']), [post],)
+        self.assertEquals(list(response.context_data['latest']), [post], )
 
 
 class CreatePostIntegrationTest(LiveServerTestCase):
@@ -70,7 +70,7 @@ class CreatePostIntegrationTest(LiveServerTestCase):
         cls.selenium = WebDriver(
             executable_path=os.path.join(os.path.dirname(settings.BASE_DIR), 'node_modules', 'phantomjs-prebuilt',
                                          'lib', 'phantom', 'bin', 'phantomjs')
-        )
+        ) if 'nt' == os.name else WebDriver()
         cls.password = random_string_generator()
         cls.user = UserFactory(password=cls.password)
         cls.client = Client()
