@@ -3,12 +3,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.views.generic import ArchiveIndexView, CreateView, DeleteView, DetailView, UpdateView
-from django.views.generic.base import View
+from django.views.generic.base import ContextMixin, View
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.list import MultipleObjectMixin
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 
-from blog.forms import PostForm
+from blog.forms import PostForm, SearchForm
 from blog.models import Post
 from blog.serializers import PostSerializer
 
@@ -33,7 +33,14 @@ class RestrictToUserMixin(View):
             else redirect(reverse('login'))
 
 
-class PostList(RestrictToUserMixin, ArchiveIndexView):
+class SearchFormMixin(ContextMixin, View):
+    def get_context_data(self, **kwargs):
+        context = super(SearchFormMixin, self).get_context_data(**kwargs)
+        context['search_form'] = SearchForm(self.request.GET)
+        return context
+
+
+class PostList(RestrictToUserMixin, SearchFormMixin, ArchiveIndexView):
     date_field = 'created'
     paginate_by = 10
     allow_empty = True
@@ -52,7 +59,7 @@ class PostListApi(ListCreateAPIView):
         return Post.objects.list(self.request.GET)
 
 
-class PostDetail(RestrictToUserMixin, DetailView):
+class PostDetail(RestrictToUserMixin, SearchFormMixin, DetailView):
     model = Post
 
 
@@ -68,12 +75,14 @@ class PostDetailApi(RetrieveUpdateDestroyAPIView):
 class PostCreate(
         LoginRequiredMixin,
         SetHeadlineMixin,
+        SearchFormMixin,
         FormValidMessageMixin,
         CreateView):
     model = Post
     form_class = PostForm
     headline = 'Add Post'
     form_valid_message = 'Post created'
+    # `object = None` is here to avoid PyCharm warnings "Instance attribute object defined outside __init__"
     object = None
 
     def get_initial(self):
@@ -92,6 +101,7 @@ class PostCreate(
 class PostUpdate(
         LoginRequiredMixin,
         SetHeadlineMixin,
+        SearchFormMixin,
         FormValidMessageMixin,
         RestrictToUserMixin,
         UpdateView):
@@ -108,6 +118,7 @@ class PostUpdate(
 
 class PostDelete(
         LoginRequiredMixin,
+        SearchFormMixin,
         FormValidMessageMixin,
         RestrictToUserMixin,
         DeleteView):

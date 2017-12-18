@@ -1,7 +1,9 @@
 from django.views.generic import TemplateView
 
+from blog.views import SearchFormMixin
 
-class ContactView(TemplateView):
+
+class ContactView(SearchFormMixin, TemplateView):
     template_name = 'personal/contact.html'
 
     def get_context_data(self, **kwargs):

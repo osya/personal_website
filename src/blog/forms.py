@@ -1,14 +1,35 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from crispy_forms.bootstrap import FormActions
+from crispy_forms.bootstrap import FieldWithButtons, FormActions
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Field, Fieldset, Layout, Submit
 from django import forms
+from django.urls import reverse
 from django.utils import timezone
 from django_markdown.widgets import MarkdownWidget
 from taggit_selectize.widgets import TagSelectize
 
 from blog.models import Post
+
+
+class SearchForm(forms.Form):
+    query = forms.CharField(required=False)
+
+    def __init__(self, *args, **kwargs):
+        super(SearchForm, self).__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.form_show_labels = False
+        self.helper.form_action = reverse('blog:list')
+        self.helper.form_class = 'navbar-form navbar-left'
+        self.helper.attrs = {'role': 'search'}
+        self.helper.form_method = 'GET'
+        self.helper.layout = Layout(
+            FieldWithButtons(
+                Field('query', autofocus='autofocus'),
+                Submit('', 'Search')
+            )
+        )
 
 
 class PostForm(forms.ModelForm):
