@@ -1,5 +1,5 @@
 from braces.views import FormValidMessageMixin, SetHeadlineMixin
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import AccessMixin, LoginRequiredMixin
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.views.generic import ArchiveIndexView, CreateView, DeleteView, DetailView, UpdateView
@@ -40,7 +40,7 @@ class SearchFormMixin(ContextMixin, View):
         return context
 
 
-class PostList(RestrictToUserMixin, SearchFormMixin, ArchiveIndexView):
+class PostList(AccessMixin, RestrictToUserMixin, SearchFormMixin, ArchiveIndexView):
     date_field = 'created'
     paginate_by = 10
     allow_empty = True
@@ -50,6 +50,11 @@ class PostList(RestrictToUserMixin, SearchFormMixin, ArchiveIndexView):
     def get_queryset(self):
         queryset = super(PostList, self).get_queryset()
         return queryset.list(self.request.GET)
+
+    # Require login if `draft` query parameter exists. It is modified method from LoginRequiredMixin
+    def dispatch(self, request, *args, **kwargs):
+        return self.handle_no_permission() if 'draft' in request.GET and not request.user.is_authenticated \
+            else super(PostList, self).dispatch(request, *args, **kwargs)
 
 
 class PostListApi(ListCreateAPIView):
