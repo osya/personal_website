@@ -8,9 +8,9 @@ from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.list import MultipleObjectMixin
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 
-from blog.forms import PostForm, SearchForm
-from blog.models import Post
-from blog.serializers import PostSerializer
+from post.forms import PostForm, SearchForm
+from post.models import Post
+from post.serializers import PostSerializer
 
 
 class RestrictToUserMixin(View):
@@ -28,7 +28,7 @@ class RestrictToUserMixin(View):
         assert isinstance(self, SingleObjectMixin)
         self.object = self.get_object()
         assert isinstance(self, View)
-        return super(RestrictToUserMixin, self).post(request, *args, **kwargs) \
+        return super(RestrictToUserMixin, self).post(request, ) \
             if self.request.user == self.object.user or self.request.user.is_superuser \
             else redirect(reverse('login'))
 
@@ -62,6 +62,10 @@ class PostListApi(ListCreateAPIView):
 
     def get_queryset(self):
         return Post.objects.list(self.request.GET)
+
+    def post(self, request, format=None, **kwargs):
+        # TODO: Add Boolean field `publish`
+        return super(PostListApi, self).post(request, format=None, **kwargs)
 
 
 class PostDetail(RestrictToUserMixin, SearchFormMixin, DetailView):
@@ -131,7 +135,7 @@ class PostDelete(
     form_class = PostForm
 
     def get_success_url(self):
-        url = reverse('blog:list')
+        url = reverse('post:list')
         query = self.request.GET.urlencode()
         if query:
             url = f'{url}?{query}'
