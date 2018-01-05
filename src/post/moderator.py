@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from django_comments_xtd.moderation import XtdCommentModerator, moderator
 
-from blog.models import Post
+from post.models import Post
 
 
 class BlogModerator(XtdCommentModerator):

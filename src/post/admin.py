@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django_markdown.admin import MarkdownModelAdmin
 
-from blog.models import Post
+from post.models import Post
 
 
 class PostAdmin(MarkdownModelAdmin):

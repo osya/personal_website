@@ -1,6 +1,6 @@
 from django.views.generic import TemplateView
 
-from blog.views import SearchFormMixin
+from post.views import SearchFormMixin
 
 
 class ContactView(SearchFormMixin, TemplateView):

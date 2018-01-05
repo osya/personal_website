@@ -9,7 +9,7 @@ import django_markdown.models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('blog', '0010_auto_20170821_1555'),
+        ('post', '0010_auto_20170821_1555'),
     ]
 
     operations = [

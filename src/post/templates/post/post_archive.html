@@ -15,10 +15,10 @@
                     <a href="{{ post.get_absolute_url }}{% query_builder request %}">
                         {{ post.title }}
                         {% if request.user.is_authenticated %}
-                            <a class="btn btn-default btn-sm" aria-hidden="true" href="{% url 'blog:update' slug=post.slug %}{% query_builder request %}">
+                            <a class="btn btn-default btn-sm" aria-hidden="true" href="{% url 'post:update' slug=post.slug %}{% query_builder request %}">
                                 <span class="glyphicon glyphicon-edit"></span>
                             </a>
-                            <a class="btn btn-default btn-sm" aria-hidden="true" href="{% url 'blog:delete' slug=post.slug %}{% query_builder request %}">
+                            <a class="btn btn-default btn-sm" aria-hidden="true" href="{% url 'post:delete' slug=post.slug %}{% query_builder request %}">
                                 <span class="glyphicon glyphicon-remove"></span>
                             </a>
                         {% endif %}
@@ -41,14 +41,14 @@
         <div class="pagination">
             <span class="page-links">
                 {% if page_obj.has_previous %}
-                    <a href="{% url 'blog:list' %}{% query_builder request page=page_obj.previous_page_number %}">&lt;</a>
+                    <a href="{% url 'post:list' %}{% query_builder request page=page_obj.previous_page_number %}">&lt;</a>
                 {% endif %}
                 {% for pn in paginator.page_range %}
                     {% if not forloop.first %}
                         &nbsp;&nbsp;|&nbsp;&nbsp;
                     {% endif %}
                     {% if page_obj.number != pn %}
-                        <a href="{% url 'blog:list' %}{% query_builder request page=pn %}">
+                        <a href="{% url 'post:list' %}{% query_builder request page=pn %}">
                     {% endif %}
                     {{ pn }}
                     {% if page_obj.number != pn %}
@@ -56,7 +56,7 @@
                     {% endif %}
                 {% endfor %}
                 {% if page_obj.has_next %}
-                    <a href="{% url 'blog:list' %}{% query_builder request page=page_obj.next_page_number %}">&gt;</a>
+                    <a href="{% url 'post:list' %}{% query_builder request page=page_obj.next_page_number %}">&gt;</a>
                 {% endif %}
             </span>
         </div>

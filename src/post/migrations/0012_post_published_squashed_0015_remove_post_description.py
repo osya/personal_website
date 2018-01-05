@@ -10,7 +10,7 @@ class Migration(migrations.Migration):
     replaces = [('blog', '0012_post_published'), ('blog', '0013_remove_post_publish'), ('blog', '0014_auto_20171214_1616'), ('blog', '0015_remove_post_description')]
 
     dependencies = [
-        ('blog', '0011_auto_20170821_1705'),
+        ('post', '0011_auto_20170821_1705'),
     ]
 
     operations = [

@@ -1,7 +1,7 @@
 from django.conf.urls import include, url
 from rest_framework.urlpatterns import format_suffix_patterns
 
-from blog.views import PostCreate, PostDelete, PostDetail, PostDetailApi, PostList, PostListApi, PostUpdate
+from post.views import PostCreate, PostDelete, PostDetail, PostDetailApi, PostList, PostListApi, PostUpdate
 
 api_patterns = [
     url(r'^$', PostListApi.as_view(), name='list'),

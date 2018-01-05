@@ -20,12 +20,12 @@
         <ul class="nav navbar-nav navbar-right">
             {% if user.is_authenticated %}
                 <li>
-                    <a href="{% url 'blog:create' %}{% query_builder request %}">
+                    <a href="{% url 'post:create' %}{% query_builder request %}">
                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Add Post
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'blog:list' %}?draft">
+                    <a href="{% url 'post:list' %}?draft">
                         <span class="glyphicon glyphicon-edit"></span>&nbsp;Drafts
                     </a>
                 </li>

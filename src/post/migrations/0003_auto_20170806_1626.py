@@ -9,7 +9,7 @@ import precise_bbcode.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('blog', '0002_auto_20170804_0044'),
+        ('post', '0002_auto_20170804_0044'),
     ]
 
     operations = [

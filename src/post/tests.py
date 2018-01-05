@@ -10,8 +10,8 @@ from django.test import Client, LiveServerTestCase, RequestFactory, TestCase
 from django.utils import timezone
 from selenium.webdriver.phantomjs.webdriver import WebDriver
 
-from blog.models import Post
-from blog.views import PostList
+from post.models import Post
+from post.views import PostList
 
 
 def random_string_generator(size=10, chars=string.ascii_lowercase + string.digits):
@@ -86,7 +86,7 @@ class CreatePostIntegrationTest(LiveServerTestCase):
         cookie = self.client.cookies[settings.SESSION_COOKIE_NAME]
         # Replace `localhost` to 127.0.0.1 due to the WinError 10054 according to the
         # https://stackoverflow.com/a/14491845/1360307
-        self.selenium.get(f'{self.live_server_url}{reverse("blog:create")}'.replace('localhost', '127.0.0.1'))
+        self.selenium.get(f'{self.live_server_url}{reverse("post:create")}'.replace('localhost', '127.0.0.1'))
         if cookie:
             self.selenium.add_cookie({
                 'name': settings.SESSION_COOKIE_NAME,

@@ -19,10 +19,10 @@ from django.views.generic import RedirectView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^blog/', include('blog.urls', namespace='blog')),
+    url(r'^post/', include('post.urls', namespace='post')),
     url(r'^', include('personal.urls')),
     url(r'^comments/', include('django_comments_xtd.urls')),
-    url(r'^$', RedirectView.as_view(pattern_name='blog:list'), name='home'),
+    url(r'^$', RedirectView.as_view(pattern_name='post:list'), name='home'),
     url(r'^accounts/', include('allauth.urls')),
     url(r'^taggit/', include('taggit_selectize.urls')),
     url(r'^markdown/', include('django_markdown.urls')),

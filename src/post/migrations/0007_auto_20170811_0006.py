@@ -9,7 +9,7 @@ import taggit_selectize.managers
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('blog', '0006_auto_20170809_1038'),
+        ('post', '0006_auto_20170809_1038'),
     ]
 
     operations = [

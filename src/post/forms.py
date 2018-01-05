@@ -9,7 +9,7 @@ from django.utils import timezone
 from django_markdown.widgets import MarkdownWidget
 from taggit_selectize.widgets import TagSelectize
 
-from blog.models import Post
+from post.models import Post
 
 
 class SearchForm(forms.Form):
@@ -20,7 +20,7 @@ class SearchForm(forms.Form):
 
         self.helper = FormHelper()
         self.helper.form_show_labels = False
-        self.helper.form_action = reverse('blog:list')
+        self.helper.form_action = reverse('post:list')
         self.helper.form_class = 'navbar-form navbar-left'
         self.helper.attrs = {'role': 'search'}
         self.helper.form_method = 'GET'
@@ -59,7 +59,7 @@ class PostForm(forms.ModelForm):
             ),
             FormActions(
                 Submit('save', 'Submit'),
-                HTML('<a href="{% url \'blog:list\' %}{% query_builder request %}">Go Back</a>')
+                HTML('<a href="{% url \'post:list\' %}{% query_builder request %}">Go Back</a>')
             )
         )
 
