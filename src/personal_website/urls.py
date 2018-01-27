@@ -17,9 +17,12 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.views.generic import RedirectView
 
+from post.urls import post_api_patterns
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^post/', include('post.urls', namespace='post')),
+    url(r'^api/', include(post_api_patterns, namespace='api')),
     url(r'^', include('personal.urls')),
     url(r'^comments/', include('django_comments_xtd.urls')),
     url(r'^$', RedirectView.as_view(pattern_name='post:list'), name='home'),

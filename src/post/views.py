@@ -10,37 +10,40 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 
 from post.forms import PostForm, SearchForm
 from post.models import Post
-from post.serializers import PostSerializer
+from post.serializers import CreatePostSerializer, PostSerializer
 
 
-class RestrictToUserMixin(View):
-    object = None
-
+class RestrictToUserGetMixin(View):
     def get_queryset(self):
         assert isinstance(self, (SingleObjectMixin, MultipleObjectMixin))
-        assert isinstance(self, View)
-        queryset = super(RestrictToUserMixin, self).get_queryset()
+        queryset = super(RestrictToUserGetMixin, self).get_queryset()
         if self.request.user.is_authenticated() and not self.request.user.is_superuser:
             queryset = queryset.filter(user=self.request.user)
         return queryset
 
-    def post(self, request, *args, **kwargs):
+
+class RestrictToUserPostMixin(View):
+    object = None
+
+    def post(self, request):
         assert isinstance(self, SingleObjectMixin)
         self.object = self.get_object()
-        assert isinstance(self, View)
-        return super(RestrictToUserMixin, self).post(request, ) \
+        return super(RestrictToUserPostMixin, self).post(request, ) \
             if self.request.user == self.object.user or self.request.user.is_superuser \
             else redirect(reverse('login'))
 
 
 class SearchFormMixin(ContextMixin, View):
+    # It is to disable warnings 'Unresolved attribute reference `request`'
+    request = None
+
     def get_context_data(self, **kwargs):
         context = super(SearchFormMixin, self).get_context_data(**kwargs)
         context['search_form'] = SearchForm(self.request.GET)
         return context
 
 
-class PostList(AccessMixin, RestrictToUserMixin, SearchFormMixin, ArchiveIndexView):
+class PostList(AccessMixin, RestrictToUserGetMixin, SearchFormMixin, ArchiveIndexView):
     date_field = 'created'
     paginate_by = 10
     allow_empty = True
@@ -57,18 +60,20 @@ class PostList(AccessMixin, RestrictToUserMixin, SearchFormMixin, ArchiveIndexVi
             else super(PostList, self).dispatch(request, *args, **kwargs)
 
 
-class PostListApi(ListCreateAPIView):
-    serializer_class = PostSerializer
+class PostListApi(AccessMixin, RestrictToUserGetMixin, ListCreateAPIView):
+    def get_serializer_class(self):
+        return CreatePostSerializer if 'POST' == self.request.method else PostSerializer
 
     def get_queryset(self):
         return Post.objects.list(self.request.GET)
 
-    def post(self, request, format=None, **kwargs):
-        # TODO: Add Boolean field `publish`
-        return super(PostListApi, self).post(request, format=None, **kwargs)
+    # Require login if `draft` query parameter exists. It is modified method from LoginRequiredMixin
+    def dispatch(self, request, *args, **kwargs):
+        return self.handle_no_permission() if 'draft' in request.GET and not request.user.is_authenticated \
+            else super(PostListApi, self).dispatch(request, *args, **kwargs)
 
 
-class PostDetail(RestrictToUserMixin, SearchFormMixin, DetailView):
+class PostDetail(RestrictToUserGetMixin, SearchFormMixin, DetailView):
     model = Post
 
 
@@ -76,7 +81,28 @@ class PostDetailApi(RetrieveUpdateDestroyAPIView):
     serializer_class = PostSerializer
 
     def get_queryset(self):
-        return Post.objects.list(self.request.GET)
+        queryset = Post.objects.list(self.request.GET)
+        if self.request.user.is_authenticated() and not self.request.user.is_superuser:
+            queryset = queryset.filter(user=self.request.user)
+        return queryset
+
+    def put(self, request, *args, **kwargs):
+        instance = self.get_object()
+        return super(PostDetailApi, self).patch(request, *args, **kwargs) \
+            if self.request.user == instance.user or self.request.user.is_superuser \
+            else redirect(reverse('login'))
+
+    def patch(self, request, *args, **kwargs):
+        instance = self.get_object()
+        return super(PostDetailApi, self).patch(request, *args, **kwargs) \
+            if self.request.user == instance.user or self.request.user.is_superuser \
+            else redirect(reverse('login'))
+
+    def delete(self, request, *args, **kwargs):
+        instance = self.get_object()
+        return super(PostDetailApi, self).delete(self) \
+            if self.request.user == instance.user or self.request.user.is_superuser \
+            else redirect(reverse('login'))
 
 # TODO: Write tests for the API calls
 
@@ -112,7 +138,7 @@ class PostUpdate(
         SetHeadlineMixin,
         SearchFormMixin,
         FormValidMessageMixin,
-        RestrictToUserMixin,
+        RestrictToUserPostMixin,
         UpdateView):
     model = Post
     form_class = PostForm
@@ -129,7 +155,7 @@ class PostDelete(
         LoginRequiredMixin,
         SearchFormMixin,
         FormValidMessageMixin,
-        RestrictToUserMixin,
+        RestrictToUserPostMixin,
         DeleteView):
     model = Post
     form_class = PostForm
