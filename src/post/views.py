@@ -6,7 +6,7 @@ from django.views.generic import ArchiveIndexView, CreateView, DeleteView, Detai
 from django.views.generic.base import ContextMixin, View
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.list import MultipleObjectMixin
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 
 from post.forms import PostForm, SearchForm
 from post.models import Post
@@ -17,6 +17,14 @@ class RestrictToUserGetMixin(View):
     def get_queryset(self):
         assert isinstance(self, (SingleObjectMixin, MultipleObjectMixin))
         queryset = super(RestrictToUserGetMixin, self).get_queryset()
+        if self.request.user.is_authenticated() and not self.request.user.is_superuser:
+            queryset = queryset.filter(user=self.request.user)
+        return queryset
+
+
+class RestrictToUserApiGetMixin(GenericAPIView):
+    def get_queryset(self):
+        queryset = Post.objects.list(self.request.GET)
         if self.request.user.is_authenticated() and not self.request.user.is_superuser:
             queryset = queryset.filter(user=self.request.user)
         return queryset
@@ -60,12 +68,9 @@ class PostList(AccessMixin, RestrictToUserGetMixin, SearchFormMixin, ArchiveInde
             else super(PostList, self).dispatch(request, *args, **kwargs)
 
 
-class PostListApi(AccessMixin, RestrictToUserGetMixin, ListCreateAPIView):
+class PostListApi(AccessMixin, RestrictToUserApiGetMixin, ListCreateAPIView):
     def get_serializer_class(self):
         return CreatePostSerializer if 'POST' == self.request.method else PostSerializer
-
-    def get_queryset(self):
-        return Post.objects.list(self.request.GET)
 
     # Require login if `draft` query parameter exists. It is modified method from LoginRequiredMixin
     def dispatch(self, request, *args, **kwargs):
@@ -77,14 +82,8 @@ class PostDetail(RestrictToUserGetMixin, SearchFormMixin, DetailView):
     model = Post
 
 
-class PostDetailApi(RetrieveUpdateDestroyAPIView):
+class PostDetailApi(RestrictToUserApiGetMixin, RetrieveUpdateDestroyAPIView):
     serializer_class = PostSerializer
-
-    def get_queryset(self):
-        queryset = Post.objects.list(self.request.GET)
-        if self.request.user.is_authenticated() and not self.request.user.is_superuser:
-            queryset = queryset.filter(user=self.request.user)
-        return queryset
 
     def put(self, request, *args, **kwargs):
         instance = self.get_object()
