@@ -6,7 +6,7 @@ from django.views.generic import ArchiveIndexView, CreateView, DeleteView, Detai
 from django.views.generic.base import ContextMixin, View
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.list import MultipleObjectMixin
-from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework import viewsets
 
 from post.forms import PostForm, SearchForm
 from post.models import Post
@@ -17,14 +17,6 @@ class RestrictToUserGetMixin(View):
     def get_queryset(self):
         assert isinstance(self, (SingleObjectMixin, MultipleObjectMixin))
         queryset = super(RestrictToUserGetMixin, self).get_queryset()
-        if self.request.user.is_authenticated() and not self.request.user.is_superuser:
-            queryset = queryset.filter(user=self.request.user)
-        return queryset
-
-
-class RestrictToUserApiGetMixin(GenericAPIView):
-    def get_queryset(self):
-        queryset = Post.objects.list(self.request.GET)
         if self.request.user.is_authenticated() and not self.request.user.is_superuser:
             queryset = queryset.filter(user=self.request.user)
         return queryset
@@ -68,42 +60,8 @@ class PostList(AccessMixin, RestrictToUserGetMixin, SearchFormMixin, ArchiveInde
             else super(PostList, self).dispatch(request, *args, **kwargs)
 
 
-class PostListApi(AccessMixin, RestrictToUserApiGetMixin, ListCreateAPIView):
-    def get_serializer_class(self):
-        return CreatePostSerializer if 'POST' == self.request.method else PostSerializer
-
-    # Require login if `draft` query parameter exists. It is modified method from LoginRequiredMixin
-    def dispatch(self, request, *args, **kwargs):
-        return self.handle_no_permission() if 'draft' in request.GET and not request.user.is_authenticated \
-            else super(PostListApi, self).dispatch(request, *args, **kwargs)
-
-
 class PostDetail(RestrictToUserGetMixin, SearchFormMixin, DetailView):
     model = Post
-
-
-class PostDetailApi(RestrictToUserApiGetMixin, RetrieveUpdateDestroyAPIView):
-    serializer_class = PostSerializer
-
-    def put(self, request, *args, **kwargs):
-        instance = self.get_object()
-        return super(PostDetailApi, self).patch(request, *args, **kwargs) \
-            if self.request.user == instance.user or self.request.user.is_superuser \
-            else redirect(reverse('login'))
-
-    def patch(self, request, *args, **kwargs):
-        instance = self.get_object()
-        return super(PostDetailApi, self).patch(request, *args, **kwargs) \
-            if self.request.user == instance.user or self.request.user.is_superuser \
-            else redirect(reverse('login'))
-
-    def delete(self, request, *args, **kwargs):
-        instance = self.get_object()
-        return super(PostDetailApi, self).delete(self) \
-            if self.request.user == instance.user or self.request.user.is_superuser \
-            else redirect(reverse('login'))
-
-# TODO: Write tests for the API calls
 
 
 class PostCreate(
@@ -168,3 +126,33 @@ class PostDelete(
 
     def get_form_valid_message(self):
         return f'{"Post" if self.object.published is not None else "Draft"} deleted'
+
+
+class PostViewSet(AccessMixin, viewsets.ModelViewSet):
+    def get_serializer_class(self):
+        return CreatePostSerializer if 'POST' == self.request.method else PostSerializer
+
+    def get_queryset(self):
+        queryset = Post.objects.list(self.request.GET)
+        if self.request.user.is_authenticated() and not self.request.user.is_superuser:
+            queryset = queryset.filter(user=self.request.user)
+        return queryset
+
+    # Require login if `draft` query parameter exists. It is modified method from LoginRequiredMixin
+    def dispatch(self, request, *args, **kwargs):
+        return self.handle_no_permission() if 'draft' in request.GET and not request.user.is_authenticated \
+            else super(PostViewSet, self).dispatch(request, *args, **kwargs)
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        return super(PostViewSet, self).update(request, *args, **kwargs) \
+            if self.request.user == instance.user or self.request.user.is_superuser \
+            else redirect(reverse('login'))
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        return super(PostViewSet, self).destroy(self) \
+            if self.request.user == instance.user or self.request.user.is_superuser \
+            else redirect(reverse('login'))
+
+# TODO: Write tests for the API calls

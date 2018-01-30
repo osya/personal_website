@@ -1,12 +1,11 @@
 from django.conf.urls import url
+from rest_framework.routers import DefaultRouter
 from rest_framework.urlpatterns import format_suffix_patterns
 
-from post.views import PostCreate, PostDelete, PostDetail, PostDetailApi, PostList, PostListApi, PostUpdate
+from post.views import PostCreate, PostDelete, PostDetail, PostList, PostUpdate, PostViewSet
 
-post_api_patterns = [
-    url(r'^$', PostListApi.as_view()),
-    url(r'^(?P<pk>\d+)/$', PostDetailApi.as_view())
-]
+router = DefaultRouter()
+router.register(r'posts', PostViewSet, base_name='post')
 
 urlpatterns = [
     url(r'^$', PostList.as_view(), name='list'),
