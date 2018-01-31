@@ -67,5 +67,5 @@ class PostForm(forms.ModelForm):
         if self.cleaned_data.get('publish'):
             if self.cleaned_data.get('published') is None:
                 self.instance.published = timezone.now()
-            self.cleaned_data.pop('publish')
+            self.cleaned_data.pop('publish', None)
         return super(PostForm, self).save(commit)
