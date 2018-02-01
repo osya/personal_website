@@ -73,11 +73,3 @@ class CreatePostSerializer(serializers.ModelSerializer):
         read_only_fields = ('user', 'published')
 
     publish = PublishFieldSerializer(source='published')
-
-    def save(self, **kwargs):
-        user = None
-        request = self.context.get('request')
-        if request and hasattr(request, 'user'):
-            user = request.user
-        kwargs['user'] = user
-        return super(CreatePostSerializer, self).save(**kwargs)

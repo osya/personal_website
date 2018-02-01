@@ -138,6 +138,9 @@ class PostViewSet(AccessMixin, viewsets.ModelViewSet):
             queryset = queryset.filter(user=self.request.user)
         return queryset
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
     # Require login if `draft` query parameter exists. It is modified method from LoginRequiredMixin
     def dispatch(self, request, *args, **kwargs):
         return self.handle_no_permission() if 'draft' in request.GET and not request.user.is_authenticated \
