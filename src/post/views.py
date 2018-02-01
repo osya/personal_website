@@ -6,10 +6,11 @@ from django.views.generic import ArchiveIndexView, CreateView, DeleteView, Detai
 from django.views.generic.base import ContextMixin, View
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.list import MultipleObjectMixin
-from rest_framework import viewsets
+from rest_framework import permissions, viewsets
 
 from post.forms import PostForm, SearchForm
 from post.models import Post
+from post.permissions import IsOwnerOrReadOnly
 from post.serializers import CreatePostSerializer, PostSerializer
 
 
@@ -129,14 +130,13 @@ class PostDelete(
 
 
 class PostViewSet(AccessMixin, viewsets.ModelViewSet):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
+
     def get_serializer_class(self):
         return CreatePostSerializer if 'POST' == self.request.method else PostSerializer
 
     def get_queryset(self):
-        queryset = Post.objects.list(self.request.GET)
-        if self.request.user.is_authenticated() and not self.request.user.is_superuser:
-            queryset = queryset.filter(user=self.request.user)
-        return queryset
+        return Post.objects.list(self.request.GET)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -145,17 +145,5 @@ class PostViewSet(AccessMixin, viewsets.ModelViewSet):
     def dispatch(self, request, *args, **kwargs):
         return self.handle_no_permission() if 'draft' in request.GET and not request.user.is_authenticated \
             else super(PostViewSet, self).dispatch(request, *args, **kwargs)
-
-    def update(self, request, *args, **kwargs):
-        instance = self.get_object()
-        return super(PostViewSet, self).update(request, *args, **kwargs) \
-            if self.request.user == instance.user or self.request.user.is_superuser \
-            else redirect(reverse('login'))
-
-    def destroy(self, request, *args, **kwargs):
-        instance = self.get_object()
-        return super(PostViewSet, self).destroy(self) \
-            if self.request.user == instance.user or self.request.user.is_superuser \
-            else redirect(reverse('login'))
 
 # TODO: Write tests for the API calls
