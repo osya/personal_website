@@ -147,3 +147,4 @@ class PostViewSet(AccessMixin, viewsets.ModelViewSet):
             else super(PostViewSet, self).dispatch(request, *args, **kwargs)
 
 # TODO: Write tests for the API calls
+# TODO: Investigate weither already exists or create API for comments
