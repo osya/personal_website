@@ -7,6 +7,7 @@ from django.utils import timezone
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework.fields import get_error_detail
+from rest_framework.relations import PrimaryKeyRelatedField
 
 from post.models import Post
 
@@ -20,6 +21,8 @@ class PostSerializer(serializers.ModelSerializer):
         # TODO: Add `tags` field to serializer
         fields = ('id', 'user', 'title', 'published', 'updated', 'body', 'created')
         read_only_fields = ('user', 'published')
+
+    user = PrimaryKeyRelatedField(read_only=True, source='user.username')
 
     # Adds missing fields to `value` for partial update if these fields exists in validator and missing in `value`
     # I fixed it in PR https://github.com/encode/django-rest-framework/pull/5748
@@ -73,3 +76,4 @@ class CreatePostSerializer(serializers.ModelSerializer):
         read_only_fields = ('user', 'published')
 
     publish = PublishFieldSerializer(source='published')
+    user = PrimaryKeyRelatedField(read_only=True, source='user.username')
