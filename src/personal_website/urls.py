@@ -23,7 +23,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^posts/', include('post.urls', namespace='post')),
     url(r'^api/', include(router.urls)),
-    url(r'^', include('personal.urls')),
+    url(r'^personal/', include('personal.urls', namespace='personal')),
     url(r'^comments/', include('django_comments_xtd.urls')),
     url(r'^$', RedirectView.as_view(pattern_name='post:list'), name='home'),
     url(r'^accounts/', include('allauth.urls')),

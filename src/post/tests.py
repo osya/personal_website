@@ -5,8 +5,8 @@ import string
 import factory
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.core.urlresolvers import reverse
-from django.test import Client, LiveServerTestCase, RequestFactory, TestCase
+from django.test import LiveServerTestCase, RequestFactory, TestCase
+from django.urls import reverse
 from django.utils import timezone
 from selenium.webdriver.phantomjs.webdriver import WebDriver
 
@@ -32,16 +32,17 @@ class PostFactory(factory.DjangoModelFactory):
         model = Post
 
     user = factory.SubFactory(UserFactory, password=random_string_generator())
-    title = 'MyTitle'
-    body = 'MyBody'
+    title = 'raw title'
+    body = 'raw body'
     is_commentable = False
     published = timezone.now()
 
 
 class PostTests(TestCase):
-    def test_str(self):
+    def test_post_create(self):
         post = PostFactory()
-        self.assertEqual(str(post), 'MyTitle')
+        self.assertEqual(1, Post.objects.count())
+        self.assertEqual('raw title', post.title)
 
 
 class BlogViewTests(TestCase):
@@ -62,7 +63,7 @@ class BlogViewTests(TestCase):
         self.assertEquals(list(response.context_data['latest']), [post], )
 
 
-class CreatePostIntegrationTest(LiveServerTestCase):
+class IntegrationTests(LiveServerTestCase):
     selenium = None
 
     @classmethod
@@ -73,13 +74,24 @@ class CreatePostIntegrationTest(LiveServerTestCase):
         ) if 'nt' == os.name else WebDriver()
         cls.password = random_string_generator()
         cls.user = UserFactory(password=cls.password)
-        cls.client = Client()
-        super(CreatePostIntegrationTest, cls).setUpClass()
+        super(IntegrationTests, cls).setUpClass()
 
     @classmethod
     def tearDownClass(cls):
         cls.selenium.quit()
-        super(CreatePostIntegrationTest, cls).tearDownClass()
+        super(IntegrationTests, cls).tearDownClass()
+
+    def test_post_list(self):
+        response = self.client.get(reverse('post:list'))
+        self.failUnlessEqual(response.status_code, 200)
+
+    def test_slash(self):
+        response = self.client.get(reverse('home'))
+        self.assertIn(response.status_code, (301, 302))
+
+    def test_empty_create(self):
+        response = self.client.get(reverse('post:create'))
+        self.assertIn(response.status_code, (301, 302))
 
     def test_create_post(self):
         self.assertTrue(self.client.login(username=self.user.username, password=self.password))
@@ -97,7 +109,8 @@ class CreatePostIntegrationTest(LiveServerTestCase):
                 # "selenium.common.exceptions.WebDriverException: Message: 'phantomjs' executable needs to be in PATH"
             })
         self.selenium.refresh()  # need to update page for logged in user
-        self.selenium.find_element_by_id('id_title').send_keys('MyTitle')
-        self.selenium.find_element_by_id('id_body').send_keys('MyContent')
+        self.selenium.find_element_by_id('id_title').send_keys('post title')
+        self.selenium.find_element_by_id('id_body').send_keys('post body')
         self.selenium.find_element_by_xpath('//*[@id="submit-id-save"]').click()
-        self.assertEqual(Post.objects.first().title, 'MyTitle')
+        self.assertEqual(1, Post.objects.count())
+        self.assertEqual('post title', Post.objects.first().title)
