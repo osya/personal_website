@@ -73,13 +73,18 @@ class IntegrationTests(LiveServerTestCase):
                                          'lib', 'phantom', 'bin', 'phantomjs')
         ) if 'nt' == os.name else WebDriver()
         cls.password = random_string_generator()
-        cls.user = UserFactory(password=cls.password)
         super(IntegrationTests, cls).setUpClass()
 
     @classmethod
     def tearDownClass(cls):
         cls.selenium.quit()
         super(IntegrationTests, cls).tearDownClass()
+
+    def setUp(self):
+        # `user` creation placed in setUp() rather than setUpClass(). Because when `user` created in setUpClass then
+        # `test_post_create` passed when executed separately, but failed when executed in batch
+        # TODO: investigate this magic
+        self.user = UserFactory(password=self.password)
 
     def test_post_list(self):
         response = self.client.get(reverse('post:list'))
