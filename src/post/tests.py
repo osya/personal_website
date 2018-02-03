@@ -93,7 +93,7 @@ class IntegrationTests(LiveServerTestCase):
         response = self.client.get(reverse('post:create'))
         self.assertIn(response.status_code, (301, 302))
 
-    def test_create_post(self):
+    def test_post_create(self):
         self.assertTrue(self.client.login(username=self.user.username, password=self.password))
         cookie = self.client.cookies[settings.SESSION_COOKIE_NAME]
         # Replace `localhost` to 127.0.0.1 due to the WinError 10054 according to the
