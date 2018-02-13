@@ -10,7 +10,7 @@ The project has text editing feature in Markdown. It has Django Admin for user m
 
 Used technologies:
 
-- Django
+- Python & Django
 - Authentication implemented based on `django-allauth`
 - Testing: Selenium & PhantomJS & Factory Boy
 - Assets management: NPM & Webpack
