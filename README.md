@@ -30,6 +30,7 @@ Used technologies:
 ## Usage
 
 ## Tests
+
 To run all tests, run
 
 ```shell
