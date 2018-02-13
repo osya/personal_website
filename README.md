@@ -6,7 +6,7 @@
 
 The project has text editing feature in Markdown. Authentication implemented based on `django-allauth`. It has Django Admin for user management. There is a CRUD management for blog posts.
 
-## Instalation
+## Introduction
 
 Used technologies:
 
