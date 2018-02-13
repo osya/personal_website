@@ -18,7 +18,6 @@ Used technologies:
 ## Installation
 
 ```shell
-
     git clone https://github.com/osya/personal_website
     cd personal_website
     pip install -r requirements.txt
@@ -32,4 +31,6 @@ Used technologies:
 
 ## Tests
 
- `python manage.py test`
+```shell
+    python manage.py test
+```
