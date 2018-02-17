@@ -13,7 +13,7 @@ psycopg2==2.7.3.1
 
 # Forms
 django-crispy-forms==1.7.0
-django-markdown-app==0.9.3
+django-markdown-app~=0.9.3
 django-precise-bbcode==1.2.8    # for migrations only
 django-taggit==0.22.1
 taggit-selectize==2.3.0
