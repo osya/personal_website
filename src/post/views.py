@@ -1,7 +1,7 @@
 from braces.views import FormValidMessageMixin, SetHeadlineMixin
 from django.contrib.auth.mixins import AccessMixin, LoginRequiredMixin
-from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
+from django.urls import reverse
 from django.views.generic import ArchiveIndexView, CreateView, DeleteView, DetailView, UpdateView
 from django.views.generic.base import ContextMixin, View
 from django.views.generic.detail import SingleObjectMixin
@@ -18,7 +18,7 @@ class RestrictToUserGetMixin(View):
     def get_queryset(self):
         assert isinstance(self, (SingleObjectMixin, MultipleObjectMixin))
         queryset = super(RestrictToUserGetMixin, self).get_queryset()
-        if self.request.user.is_authenticated() and not self.request.user.is_superuser:
+        if self.request.user.is_authenticated and not self.request.user.is_superuser:
             queryset = queryset.filter(user=self.request.user)
         return queryset
 
@@ -57,20 +57,15 @@ class PostList(AccessMixin, RestrictToUserGetMixin, SearchFormMixin, ArchiveInde
 
     # Require login if `draft` query parameter exists. It is modified method from LoginRequiredMixin
     def dispatch(self, request, *args, **kwargs):
-        return self.handle_no_permission() if 'draft' in request.GET and not request.user.is_authenticated \
-            else super(PostList, self).dispatch(request, *args, **kwargs)
+        return self.handle_no_permission() if 'draft' in request.GET and not request.user.is_authenticated else super(
+            PostList, self).dispatch(request, *args, **kwargs)
 
 
 class PostDetail(RestrictToUserGetMixin, SearchFormMixin, DetailView):
     model = Post
 
 
-class PostCreate(
-        LoginRequiredMixin,
-        SetHeadlineMixin,
-        SearchFormMixin,
-        FormValidMessageMixin,
-        CreateView):
+class PostCreate(LoginRequiredMixin, SetHeadlineMixin, SearchFormMixin, FormValidMessageMixin, CreateView):
     model = Post
     form_class = PostForm
     headline = 'Add Post'
@@ -91,13 +86,8 @@ class PostCreate(
         return super(PostCreate, self).form_valid(form)
 
 
-class PostUpdate(
-        LoginRequiredMixin,
-        SetHeadlineMixin,
-        SearchFormMixin,
-        FormValidMessageMixin,
-        RestrictToUserPostMixin,
-        UpdateView):
+class PostUpdate(LoginRequiredMixin, SetHeadlineMixin, SearchFormMixin, FormValidMessageMixin, RestrictToUserPostMixin,
+                 UpdateView):
     model = Post
     form_class = PostForm
     headline = 'Update Post'
@@ -109,12 +99,7 @@ class PostUpdate(
         return initial
 
 
-class PostDelete(
-        LoginRequiredMixin,
-        SearchFormMixin,
-        FormValidMessageMixin,
-        RestrictToUserPostMixin,
-        DeleteView):
+class PostDelete(LoginRequiredMixin, SearchFormMixin, FormValidMessageMixin, RestrictToUserPostMixin, DeleteView):
     model = Post
     form_class = PostForm
 
@@ -133,7 +118,7 @@ class PostViewSet(AccessMixin, viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
 
     def get_serializer_class(self):
-        return CreatePostSerializer if 'POST' == self.request.method else PostSerializer
+        return CreatePostSerializer if self.request.method == 'POST' else PostSerializer
 
     def get_queryset(self):
         return Post.objects.list(self.request.GET)
@@ -143,8 +128,9 @@ class PostViewSet(AccessMixin, viewsets.ModelViewSet):
 
     # Require login if `draft` query parameter exists. It is modified method from LoginRequiredMixin
     def dispatch(self, request, *args, **kwargs):
-        return self.handle_no_permission() if 'draft' in request.GET and not request.user.is_authenticated \
-            else super(PostViewSet, self).dispatch(request, *args, **kwargs)
+        return self.handle_no_permission() if 'draft' in request.GET and not request.user.is_authenticated else super(
+            PostViewSet, self).dispatch(request, *args, **kwargs)
+
 
 # TODO: Write tests for the API calls
 # TODO: Investigate weither already exists or create API for comments

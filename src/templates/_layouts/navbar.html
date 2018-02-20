@@ -13,8 +13,10 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
-            {% url 'contact' as contact %}
-            <li {% if request.path == contact %} class="active" {% endif %}><a href="{% url 'contact' %}">Contact</a></li>
+            {% url 'personal:contact' as contact %}
+            <li {% if request.path == contact %} class="active" {% endif %}>
+                <a href={{ contact }}>Contact</a>
+            </li>
         </ul>
         {% if search_form %}{% crispy search_form %}{% endif %}
         <ul class="nav navbar-nav navbar-right">

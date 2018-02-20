@@ -13,23 +13,23 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import include, url
 from django.contrib import admin
+from django.urls import include, path
 from django.views.generic import RedirectView
 
 from post.urls import router
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^posts/', include('post.urls', namespace='post')),
-    url(r'^api/', include(router.urls)),
-    url(r'^personal/', include('personal.urls', namespace='personal')),
-    url(r'^comments/', include('django_comments_xtd.urls')),
-    url(r'^$', RedirectView.as_view(pattern_name='post:list'), name='home'),
-    url(r'^accounts/', include('allauth.urls')),
-    url(r'^taggit/', include('taggit_selectize.urls')),
-    url(r'^markdown/', include('django_markdown.urls')),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('admin/', admin.site.urls),
+    path('posts/', include('post.urls', namespace='post')),
+    path('api/', include(router.urls)),
+    path('personal/', include('personal.urls', namespace='personal')),
+    path('comments/', include('django_comments_xtd.urls')),
+    path('', RedirectView.as_view(pattern_name='post:list'), name='home'),
+    path('accounts/', include('allauth.urls')),
+    path('taggit/', include('taggit_selectize.urls')),
+    path('markdown/', include('django_markdown.urls')),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
 
 # TODO: Implement Profile and uploading photo in profile according to the https://github.com/osya/music_website, update

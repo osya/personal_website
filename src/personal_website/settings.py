@@ -40,19 +40,9 @@ DJANGO_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.sites',  # required for django-comments-xtd, django-allauth
 )
-THIRD_PARTY_APPS = (
-    'django_comments_xtd',
-    'django_comments',
-    'django_markdown',
-    'taggit',
-    'taggit_selectize',
-    'crispy_forms',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'rest_framework',
-    'webpack_loader'
-)
+THIRD_PARTY_APPS = ('django_comments_xtd', 'django_comments', 'django_markdown', 'taggit', 'taggit_selectize',
+                    'crispy_forms', 'allauth', 'allauth.account', 'allauth.socialaccount', 'rest_framework',
+                    'webpack_loader')
 LOCAL_APPS = (
     'post',
     'personal',
@@ -143,7 +133,7 @@ STATIC_URL = '/static/'
 
 if DEBUG:
     STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static', 'static-only')
-    STATICFILES_DIRS = (os.path.join(os.path.dirname(BASE_DIR), 'static', 'static'),)
+    STATICFILES_DIRS = (os.path.join(os.path.dirname(BASE_DIR), 'static', 'static'), )
 
 WEBPACK_LOADER = {
     'DEFAULT': {
@@ -198,7 +188,9 @@ SOCIALACCOUNT_QUERY_EMAIL = True
 SOCIALACCOUNT_PROVIDERS = {
     'facebook': {
         'SCOPE': ['email'],
-        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'AUTH_PARAMS': {
+            'auth_type': 'reauthenticate'
+        },
         'METHOD': 'oauth2',
         'VERIFIED_EMAIL': False
     }
@@ -210,12 +202,13 @@ TAGGIT_STRING_FROM_TAGS = 'taggit_selectize.utils.join_tags'
 
 # Disable it if you need to work with taggit-selectize in django-admin
 TAGGIT_SELECTIZE = {
-    'CSS_FILENAMES': (os.path.basename(get_files('selectize', extension='css')[0]['path']),),
+    'CSS_FILENAMES': (os.path.basename(get_files('selectize', extension='css')[0]['path']), ),
 }
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
     ],
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 10,
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination'
 }
