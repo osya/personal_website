@@ -16,6 +16,7 @@ class PostSerializer(serializers.ModelSerializer):
     """
         Serializer for retrieving or modifying an existing post
     """
+
     class Meta:
         model = Post
         # TODO: Add `tags` field to serializer
@@ -70,6 +71,7 @@ class CreatePostSerializer(serializers.ModelSerializer):
     """
         Serializer for creating a new post
     """
+
     class Meta:
         model = Post
         fields = ('id', 'user', 'title', 'created', 'updated', 'published', 'body', 'publish')

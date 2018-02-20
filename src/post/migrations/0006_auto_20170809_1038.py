@@ -20,7 +20,11 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterModelOptions(
             name='post',
-            options={'ordering': ('-posted',), 'verbose_name': 'blog post', 'verbose_name_plural': 'blog posts'},
+            options={
+                'ordering': ('-posted', ),
+                'verbose_name': 'blog post',
+                'verbose_name_plural': 'blog posts'
+            },
         ),
         migrations.RenameField(
             model_name='post',
@@ -55,12 +59,18 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='post',
             name='tags',
-            field=taggit.managers.TaggableManager(blank=True, help_text='A comma-separated list of tags.', through='taggit.TaggedItem', to='taggit.Tag', verbose_name='Tags'),
+            field=taggit.managers.TaggableManager(
+                blank=True,
+                help_text='A comma-separated list of tags.',
+                through='taggit.TaggedItem',
+                to='taggit.Tag',
+                verbose_name='Tags'),
         ),
         migrations.AddField(
             model_name='post',
             name='user',
-            field=models.ForeignKey(default=1, editable=False, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(
+                default=1, editable=False, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
             preserve_default=False,
         ),
         migrations.AlterField(

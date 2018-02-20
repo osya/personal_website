@@ -15,7 +15,11 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterModelOptions(
             name='post',
-            options={'ordering': ('-created',), 'verbose_name': 'Blog Post', 'verbose_name_plural': 'Blog Posts'},
+            options={
+                'ordering': ('-created', ),
+                'verbose_name': 'Blog Post',
+                'verbose_name_plural': 'Blog Posts'
+            },
         ),
         migrations.RenameField(
             model_name='post',

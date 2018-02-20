@@ -24,12 +24,7 @@ class SearchForm(forms.Form):
         self.helper.form_class = 'navbar-form navbar-left'
         self.helper.attrs = {'role': 'search'}
         self.helper.form_method = 'GET'
-        self.helper.layout = Layout(
-            FieldWithButtons(
-                Field('query', autofocus='autofocus'),
-                Submit('', 'Search')
-            )
-        )
+        self.helper.layout = Layout(FieldWithButtons(Field('query', autofocus='autofocus'), Submit('', 'Search')))
 
 
 class PostForm(forms.ModelForm):
@@ -46,22 +41,15 @@ class PostForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(PostForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        fields = [
-            'title', 'body', 'is_commentable', 'tags', 'publish'
-        ]
+        fields = ['title', 'body', 'is_commentable', 'tags', 'publish']
         if self.initial.get('publish'):
             # noinspection PyTypeChecker
             fields.insert(-1, Field('published', disabled=True))
         self.helper.layout = Layout(
-            Fieldset(
-                None,
-                *fields
-            ),
+            Fieldset(None, *fields),
             FormActions(
                 Submit('save', 'Submit'),
-                HTML('<a href="{% url \'post:list\' %}{% query_builder request %}">Go Back</a>')
-            )
-        )
+                HTML('<a href="{% url \'post:list\' %}{% query_builder request %}">Go Back</a>')))
 
     def save(self, commit=True):
         if self.cleaned_data.get('publish'):
