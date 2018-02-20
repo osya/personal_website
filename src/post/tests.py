@@ -19,6 +19,7 @@ def random_string_generator(size=10,
     return ''.join(random.choice(chars) for _ in range(size))
 
 
+# pragma pylint: disable=R0903
 class UserFactory(factory.DjangoModelFactory):
     class Meta:
         model = get_user_model()
@@ -38,6 +39,9 @@ class PostFactory(factory.DjangoModelFactory):
     body = 'raw body'
     is_commentable = False
     published = timezone.now()
+
+
+# pragma pylint: enable=R0903
 
 
 class PostTests(TestCase):
