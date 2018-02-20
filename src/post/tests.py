@@ -97,7 +97,7 @@ class IntegrationTests(LiveServerTestCase):
 
     def test_post_list(self):
         response = self.client.get(reverse('post:list'))
-        self.failUnlessEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_slash(self):
         response = self.client.get(reverse('home'))
