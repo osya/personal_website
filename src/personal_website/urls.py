@@ -16,13 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import RedirectView
+from rest_framework.routers import DefaultRouter
 
-from post.urls import router
+ROUTER = DefaultRouter()
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('posts/', include('post.urls', namespace='post')),
-    path('api/', include(router.urls)),
+    path('api/', include(ROUTER.urls)),
     path('personal/', include('personal.urls', namespace='personal')),
     path('comments/', include('django_comments_xtd.urls')),
     path('', RedirectView.as_view(pattern_name='post:list'), name='home'),

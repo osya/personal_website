@@ -1,13 +1,12 @@
 from django.urls import path
-from rest_framework.routers import DefaultRouter
 from rest_framework.urlpatterns import format_suffix_patterns
 
+from personal_website.urls import ROUTER
 from post.views import PostCreate, PostDelete, PostDetail, PostList, PostUpdate, PostViewSet
 
 app_name = 'post'
 
-router = DefaultRouter()
-router.register('posts', PostViewSet, base_name='post')
+ROUTER.register('posts', PostViewSet, base_name='post')
 
 urlpatterns = [
     path('', PostList.as_view(), name='list'),
