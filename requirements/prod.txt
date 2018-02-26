@@ -6,6 +6,7 @@ django-braces==1.12.0
 django-comments-xtd~=2.1.0
 djangorestframework~=3.7.7
 django-webpack-loader==0.5.0
+django-autoslug-iplweb~=1.9.4.dev0
 
 # Database
 dj-database-url==0.4.2
