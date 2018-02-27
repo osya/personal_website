@@ -1,7 +1,4 @@
 {
     "python.pythonPath": "E:\\Anaconda3\\envs\\Django\\python.exe",
-    "python.linting.pylintArgs": [
-        "--disable=missing-docstring"
-    ],
     "python.formatting.provider": "yapf"
 }
