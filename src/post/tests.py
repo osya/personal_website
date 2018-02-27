@@ -2,12 +2,13 @@ import os
 import random
 import string
 
-import factory
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.test import LiveServerTestCase, RequestFactory, TestCase
 from django.urls import reverse
 from django.utils import timezone
+
+import factory
 from selenium.webdriver.phantomjs.webdriver import WebDriver
 
 from post.models import Post

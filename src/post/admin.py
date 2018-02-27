@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from django_markdown.admin import MarkdownModelAdmin
 
 from post.models import Post

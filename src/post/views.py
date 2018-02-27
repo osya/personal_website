@@ -1,4 +1,3 @@
-from braces.views import FormValidMessageMixin, SetHeadlineMixin
 from django.contrib.auth.mixins import AccessMixin, LoginRequiredMixin
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -6,6 +5,8 @@ from django.views.generic import ArchiveIndexView, CreateView, DeleteView, Detai
 from django.views.generic.base import ContextMixin, View
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.list import MultipleObjectMixin
+
+from braces.views import FormValidMessageMixin, SetHeadlineMixin
 from rest_framework import permissions, viewsets
 
 from post.forms import PostForm, SearchForm

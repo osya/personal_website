@@ -1,9 +1,10 @@
 # noinspection PyPackageRequirements
-from autoslug import AutoSlugField
 from django.conf import settings
 from django.db import models
 from django.db.models import Q
 from django.urls import reverse
+
+from autoslug import AutoSlugField
 from django_markdown.models import MarkdownField
 from taggit_selectize.managers import TaggableManager
 
