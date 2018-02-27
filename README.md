@@ -12,7 +12,7 @@ Used technologies:
 
 - Python & Django
 - Authentication implemented based on `django-allauth`
-- Testing: Selenium & PhantomJS & Factory Boy
+- Testing: Selenium & Headless Chrome & Factory Boy
 - Assets management: NPM & Webpack
 - Travis CI
 - Deployed at [Heroku](https://django-personal-website.herokuapp.com/)

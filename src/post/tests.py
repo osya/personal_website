@@ -1,4 +1,3 @@
-import os
 import random
 import string
 
@@ -8,8 +7,10 @@ from django.test import LiveServerTestCase, RequestFactory, TestCase
 from django.urls import reverse
 from django.utils import timezone
 
+import chromedriver_binary
 import factory
-from selenium.webdriver.phantomjs.webdriver import WebDriver
+from selenium.webdriver.chrome import webdriver
+from selenium.webdriver.chrome.options import Options
 
 from post.models import Post
 from post.views import PostList
@@ -79,10 +80,12 @@ class IntegrationTests(LiveServerTestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.selenium = WebDriver(
-            executable_path=os.path.join(
-                os.path.dirname(settings.BASE_DIR), 'node_modules', 'phantomjs-prebuilt', 'lib', 'phantom', 'bin',
-                'phantomjs')) if os.name == 'nt' else WebDriver()
+        chrome_options = Options()
+        chrome_options.add_argument('--headless')
+        chrome_options.add_argument('--log-level=3')
+        cls.selenium = webdriver.WebDriver(
+            executable_path=chromedriver_binary.chromedriver_filename, chrome_options=chrome_options)
+
         cls.password = random_string_generator()
         super(IntegrationTests, cls).setUpClass()
 
@@ -120,10 +123,7 @@ class IntegrationTests(LiveServerTestCase):
                 'name': settings.SESSION_COOKIE_NAME,
                 'value': cookie.value,
                 'secure': False,
-                'path': '/',
-                # it is needed for PhantomJS due to the issue "selenium.common.exceptions.WebDriverException:
-                # Message: 'phantomjs' executable needs to be in PATH"
-                'domain': '127.0.0.1'
+                'path': '/'
             })
         self.selenium.refresh()  # need to update page for logged in user
         self.selenium.find_element_by_id('id_title').send_keys('post title')
@@ -131,6 +131,3 @@ class IntegrationTests(LiveServerTestCase):
         self.selenium.find_element_by_xpath('//*[@id="submit-id-save"]').click()
         self.assertEqual(1, Post.objects.count())
         self.assertEqual('post title', Post.objects.first().title)
-
-
-# TODO: Selenium support for PhantomJS has been deprecated, please use headless versions of Chrome or Firefox instead
