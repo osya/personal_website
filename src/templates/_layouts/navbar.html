@@ -17,6 +17,8 @@
             <li {% if request.path == contact %} class="active" {% endif %}>
                 <a href={{ contact }}>Contact</a>
             </li>
+            {% url 'personal:about' as about %}
+            <li {% if request.path == about %} class="active" {% endif %}><a href={{ about }}>About</a></li>
         </ul>
         {% if search_form %}{% crispy search_form %}{% endif %}
         <ul class="nav navbar-nav navbar-right">
