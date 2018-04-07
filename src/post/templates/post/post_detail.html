@@ -20,16 +20,19 @@
                 <br>
             {% endif %}
         {% endwith %}
+
         {% get_comment_count for object as comment_count %}
-        <div class="text-center" style="padding-top:20px">
-            <a href="{% url 'post:list' %}{% query_builder request %}"><< Back to the post list</a>
-            &nbsp;&sdot;&nbsp;
-            <a class="btn btn-default btn-sm" aria-hidden="true" href="{% url 'post:delete' slug=object.slug %}{% query_builder request %}">
-                <span class="glyphicon glyphicon-remove"></span>
-            </a>
-            &nbsp;&sdot;&nbsp;
-            {{ comment_count }} comments have been posted.
-        </div>
+        <footer>
+            <div class="text-center" style="padding-top:20px">
+                <a href="{% url 'post:list' %}{% query_builder request %}"><< Back to the post list</a>
+                &nbsp;&sdot;&nbsp;
+                <a class="btn btn-default btn-sm" aria-hidden="true" href="{% url 'post:delete' slug=object.slug %}{% query_builder request %}">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </a>
+                &nbsp;&sdot;&nbsp;
+                {{ comment_count }} comments have been posted.
+            </div>
+        </footer>
 
         {% if comment_count %}
             <hr/>
@@ -39,7 +42,7 @@
         {% endif %}
 
         <div class="comment">
-          <h4 class="text-center">Your comment</h4>
+          <h3 class="text-center">Your comment</h3>
           <div class="well">
             {% render_comment_form for object %}
           </div>
