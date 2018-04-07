@@ -2,16 +2,16 @@
 
 {% block title %}Blog{% endblock %}
 
-{% block headline %}<h2>Hey, welcome to my website! I am a programmer!</h2>{% endblock %}
+{% block headline %}<h1>Hey, welcome to my website! I am a programmer!</h1>{% endblock %}
 
 {% block content %}
     <ul class="list-group">
         {% for post in latest %}
             <li class="list-group-item">
 {#                Used query_build tag instead of simply #}
-{#                <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1> to be able to come back #}
+{#                <h2><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h2> to be able to come back #}
 {#                to this page#}
-                <h1>
+                <h2>
                     <a href="{{ post.get_absolute_url }}{% query_builder request %}">
                         {{ post.title }}
                         {% if request.user.is_authenticated %}
@@ -23,7 +23,7 @@
                             </a>
                         {% endif %}
                     </a>
-                </h1>
+                </h2>
                 <p>created: {{ post.created|date:"d-m-Y" }}</p>
                 <p>{{ post.body|truncatechars:200 }}</p>
             </li>
