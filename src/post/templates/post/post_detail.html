@@ -5,48 +5,44 @@
 {% block title %}Post {{ object.title }}{% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-sm-6 col-sm-offset-3">
-            <article>
-                <header>
-                    <h2 style="text-align: center;">Post "{{ object.title }}"</h2>
-                    <time pubdate>{{ object.created }}</time>
-                </header>
-                <p>{{ object.body | markdown }}</p>
+    <article class="row col-sm-6 col-sm-offset-3">
+        <header>
+            <h2 style="text-align: center;">Post "{{ object.title }}"</h2>
+            <time pubdate>{{ object.created }}</time>
+        </header>
+        <p>{{ object.body | markdown }}</p>
+        <br>
+        {% with names=object.tags.names %}
+            {% if names.count > 0 %}
+                <p>Tags: {% for name in names %}{% if not forloop.first %}, {% endif %}
+                    <a href="{% url 'post:list' %}{% query_builder request tags=name page=None %}">{{ name }}</a>
+                {% endfor %}</p>
                 <br>
-                {% with names=object.tags.names %}
-                    {% if names.count > 0 %}
-                        <p>Tags: {% for name in names %}{% if not forloop.first %}, {% endif %}
-                            <a href="{% url 'post:list' %}{% query_builder request tags=name page=None %}">{{ name }}</a>
-                        {% endfor %}</p>
-                        <br>
-                    {% endif %}
-                {% endwith %}
-                {% get_comment_count for object as comment_count %}
-                <div class="text-center" style="padding-top:20px">
-                    <a href="{% url 'post:list' %}{% query_builder request %}"><< Back to the post list</a>
-                    &nbsp;&sdot;&nbsp;
-                    <a class="btn btn-default btn-sm" aria-hidden="true" href="{% url 'post:delete' slug=object.slug %}{% query_builder request %}">
-                        <span class="glyphicon glyphicon-remove"></span>
-                    </a>
-                    &nbsp;&sdot;&nbsp;
-                    {{ comment_count }} comments have been posted.
-                </div>
-
-                {% if comment_count %}
-                    <hr/>
-                    <div class="comments">
-                      {% render_comment_list for object %}
-                    </div>
-                {% endif %}
-
-                <div class="comment">
-                  <h4 class="text-center">Your comment</h4>
-                  <div class="well">
-                    {% render_comment_form for object %}
-                  </div>
-                </div>
-            <article>
+            {% endif %}
+        {% endwith %}
+        {% get_comment_count for object as comment_count %}
+        <div class="text-center" style="padding-top:20px">
+            <a href="{% url 'post:list' %}{% query_builder request %}"><< Back to the post list</a>
+            &nbsp;&sdot;&nbsp;
+            <a class="btn btn-default btn-sm" aria-hidden="true" href="{% url 'post:delete' slug=object.slug %}{% query_builder request %}">
+                <span class="glyphicon glyphicon-remove"></span>
+            </a>
+            &nbsp;&sdot;&nbsp;
+            {{ comment_count }} comments have been posted.
         </div>
-    </div>
+
+        {% if comment_count %}
+            <hr/>
+            <div class="comments">
+              {% render_comment_list for object %}
+            </div>
+        {% endif %}
+
+        <div class="comment">
+          <h4 class="text-center">Your comment</h4>
+          <div class="well">
+            {% render_comment_form for object %}
+          </div>
+        </div>
+    <article>
 {% endblock %}
